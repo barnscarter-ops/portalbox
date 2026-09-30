@@ -1,0 +1,373 @@
+{
+  "status": "CAD dimensions verified; physical fit remains unverified",
+  "units": "mm",
+  "main_body_mm": [
+    107.3,
+    61.3,
+    31
+  ],
+  "pod_depth_accounting": {
+    "body": 14,
+    "shoe": 3.65,
+    "body_to_case_gap": 0.35,
+    "shoe_in_case_overlap": 3.3,
+    "lid": 2.4,
+    "installed_added_depth": 16.75
+  },
+  "parts": {
+    "bezel": {
+      "local_bounds_mm": [
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          107.3,
+          61.3,
+          7.4
+        ]
+      ],
+      "full_part_size_mm": [
+        107.3,
+        61.3,
+        7.4
+      ],
+      "embedded_max_rounding_error_mm": 0.005
+    },
+    "shell": {
+      "local_bounds_mm": [
+        [
+          0.0,
+          -11.4,
+          3.0
+        ],
+        [
+          107.3,
+          61.3,
+          34.4
+        ]
+      ],
+      "full_part_size_mm": [
+        107.3,
+        72.7,
+        31.4
+      ],
+      "embedded_max_rounding_error_mm": 0.005
+    },
+    "rail_cover": {
+      "local_bounds_mm": [
+        [
+          0.0,
+          -6.3,
+          0.0
+        ],
+        [
+          90.3,
+          6.29999,
+          3.65
+        ]
+      ],
+      "full_part_size_mm": [
+        90.3,
+        12.59999,
+        3.65
+      ],
+      "embedded_max_rounding_error_mm": 0.005
+    },
+    "stylus_cap": {
+      "local_bounds_mm": [
+        [
+          -6.4,
+          -6.4,
+          0.0
+        ],
+        [
+          9.0,
+          6.4,
+          7.0
+        ]
+      ],
+      "full_part_size_mm": [
+        15.4,
+        12.8,
+        7.0
+      ],
+      "embedded_max_rounding_error_mm": 0.00492
+    },
+    "pod": {
+      "local_bounds_mm": [
+        [
+          -8.0,
+          0.0,
+          -3.65
+        ],
+        [
+          66.0,
+          56.0,
+          14.0
+        ]
+      ],
+      "full_part_size_mm": [
+        74.0,
+        56.0,
+        17.65
+      ],
+      "embedded_max_rounding_error_mm": 0.005
+    },
+    "pod_lid": {
+      "local_bounds_mm": [
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          66.0,
+          56.0,
+          2.4
+        ]
+      ],
+      "full_part_size_mm": [
+        66.0,
+        56.0,
+        2.4
+      ],
+      "embedded_max_rounding_error_mm": 0.004335
+    },
+    "divider": {
+      "local_bounds_mm": [
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          60.6,
+          50.6,
+          1.6
+        ]
+      ],
+      "full_part_size_mm": [
+        60.6,
+        50.6,
+        1.6
+      ],
+      "embedded_max_rounding_error_mm": 0.0041
+    },
+    "button": {
+      "local_bounds_mm": [
+        [
+          -3.5,
+          -3.5,
+          0.0
+        ],
+        [
+          3.5,
+          3.5,
+          18.5
+        ]
+      ],
+      "full_part_size_mm": [
+        7.0,
+        7.0,
+        18.5
+      ],
+      "embedded_max_rounding_error_mm": 0.00492
+    }
+  },
+  "assemblies": {
+    "battery": {
+      "bounds_mm": [
+        [
+          0.0,
+          -11.4,
+          0.0
+        ],
+        [
+          110.0,
+          61.3,
+          47.75
+        ]
+      ],
+      "size_mm": [
+        110.0,
+        72.7,
+        47.75
+      ]
+    },
+    "cover": {
+      "bounds_mm": [
+        [
+          0.0,
+          -11.4,
+          0.0
+        ],
+        [
+          108.0,
+          61.3,
+          37.0
+        ]
+      ],
+      "size_mm": [
+        108.0,
+        72.7,
+        37.0
+      ]
+    },
+    "empty": {
+      "bounds_mm": [
+        [
+          0.0,
+          -11.4,
+          0.0
+        ],
+        [
+          108.0,
+          61.3,
+          37.0
+        ]
+      ],
+      "size_mm": [
+        108.0,
+        72.7,
+        37.0
+      ]
+    }
+  },
+  "hardware_envelopes": {
+    "board": {
+      "size_mm": [
+        101.5,
+        55.5,
+        1.6
+      ],
+      "position_mm": [
+        2.9,
+        2.9,
+        7.4
+      ]
+    },
+    "screen": {
+      "size_mm": [
+        77.84,
+        50.56,
+        1.2
+      ],
+      "position_mm": [
+        14.73,
+        5.37,
+        3.2
+      ]
+    },
+    "fan": {
+      "size_mm": [
+        25,
+        25,
+        10
+      ],
+      "position_mm": [
+        16.5,
+        31.5,
+        18.6
+      ]
+    },
+    "battery": {
+      "size_mm": [
+        60,
+        50,
+        7.3
+      ],
+      "position_mm": [
+        47,
+        8,
+        34.25
+      ]
+    },
+    "booster": {
+      "size_mm": [
+        45,
+        23,
+        10
+      ],
+      "position_mm": [
+        52,
+        34,
+        16.6
+      ]
+    }
+  },
+  "construction_dimensions": {
+    "wall_mm": 2.4,
+    "pcb_edge_gap_mm": 0.5,
+    "mounting_pitch_mm": [
+      94.5,
+      47.9
+    ],
+    "board_reference_hole_diameter_mm": 3.2,
+    "screen_aperture_mm": [
+      78.6,
+      51.2
+    ],
+    "track_length_mm": 92.3,
+    "cover_length_mm": 90.3,
+    "rail_profile_allowance_mm": 0.35,
+    "stylus_tube_length_mm": 98,
+    "stylus_bore_mm": 8.8,
+    "stylus_outer_tube_diameter_mm": 12.8,
+    "upper_edge_ports_center_x_width_mm": [
+      [
+        29.44,
+        8
+      ],
+      [
+        45.17,
+        9
+      ],
+      [
+        64.1,
+        12
+      ],
+      [
+        84.1,
+        12
+      ]
+    ],
+    "lower_edge_ports_center_x_width_mm": [
+      [
+        25.48,
+        9
+      ],
+      [
+        40.02,
+        13
+      ],
+      [
+        57.89,
+        16
+      ]
+    ],
+    "board_edge_port_z_center_height_mm": [
+      11,
+      6.5
+    ],
+    "charge_socket_reservation_width_height_mm": [
+      14,
+      8
+    ],
+    "battery_socket_reservation_width_height_mm": [
+      10,
+      7
+    ],
+    "fan_mounting_pitch_mm": [
+      20,
+      20
+    ],
+    "fan_hole_diameter_mm": 2.8,
+    "fan_exhaust_diameter_mm": 23
+  },
+  "limitations": [
+    "Hardware envelopes do not prove component or connector fit.",
+    "Port sizes, switch travel, fan holes and antenna clearance remain provisional."
+  ]
+}
