@@ -1,0 +1,118 @@
+<div id="cyd-power-wiring">
+  <h2>CYD · battery and charger wiring</h2>
+  <div class="viz-controls"><label class="form-label">Inspect connection<select class="form-select" id="cyd-wire-select"><option value="all">All wiring</option><option value="battery">Battery jumper</option><option value="charge">Added USB-C charge input</option><option value="boost">Booster output</option><option value="native">Original CYD USB-C power</option><option value="load">Selected supply to CYD</option><option value="fan">Fan power</option><option value="data">Programming data</option></select></label></div>
+  <div class="cyd-legend text-small"><span><i class="cyd-positive"></i>Positive supply</span><span><i class="cyd-ground"></i>Common ground</span><span><i class="cyd-data"></i>USB data</span><span>Illustrative pad positions · not a soldering template</span></div>
+  <svg id="cyd-wire-drawing" role="img" aria-labelledby="cyd-wire-title cyd-wire-desc"></svg>
+  <div id="cyd-wire-detail" class="text-small" aria-live="polite"></div>
+</div>
+<style>
+#cyd-power-wiring { width:100%; }
+#cyd-power-wiring .cyd-legend { display:flex;flex-wrap:wrap;gap:8px 18px;margin:12px 0; }
+#cyd-power-wiring .cyd-legend span { display:inline-flex;align-items:center;gap:6px; }
+#cyd-power-wiring .cyd-legend i { display:inline-block;width:22px;height:3px; }
+#cyd-power-wiring .cyd-positive { background:var(--red); }
+#cyd-power-wiring .cyd-ground { background:var(--foreground); }
+#cyd-power-wiring .cyd-data { background:var(--blue); }
+#cyd-power-wiring svg { display:block;width:100%;overflow:visible; }
+#cyd-power-wiring svg text { fill:var(--foreground); }
+#cyd-power-wiring .wire { fill:none;stroke-linecap:round;stroke-linejoin:round;stroke-width:3; }
+#cyd-power-wiring .wire.positive { stroke:var(--red); }
+#cyd-power-wiring .wire.ground { stroke:var(--foreground);stroke-width:2; }
+#cyd-power-wiring .wire.data { stroke:var(--blue);stroke-dasharray:5 5; }
+#cyd-power-wiring .hardware { fill:var(--muted);stroke:var(--border);stroke-width:1.5; }
+#cyd-power-wiring .pcb { fill:color-mix(in srgb,var(--green) 18%,var(--background));stroke:var(--green);stroke-width:1.5; }
+#cyd-power-wiring .metal { fill:var(--secondary);stroke:var(--muted-foreground);stroke-width:1; }
+#cyd-power-wiring .chip { fill:var(--foreground);opacity:.7; }
+#cyd-power-wiring .pad { fill:var(--yellow);stroke:var(--foreground);stroke-width:1; }
+#cyd-power-wiring .hole { fill:var(--background);stroke:var(--muted-foreground);stroke-width:1.5; }
+#cyd-power-wiring .case { fill:none;stroke:var(--border);stroke-width:1;stroke-dasharray:7 5; }
+#cyd-power-wiring .pending { fill:color-mix(in srgb,var(--orange) 8%,var(--background));stroke:var(--orange);stroke-width:1.5;stroke-dasharray:6 4; }
+#cyd-power-wiring .secondary { fill:var(--muted-foreground); }
+</style>
+<script>
+(()=>{
+ const root=document.getElementById('cyd-power-wiring'), svg=root.querySelector('#cyd-wire-drawing'), select=root.querySelector('#cyd-wire-select'), detail=root.querySelector('#cyd-wire-detail');
+ const notes={all:'Battery and USB grounds are common. Dashed isolation area: circuit and parts still unresolved.',battery:'Protected LiPo → short keyed jumper → case socket → PowerBoost JST. Verify cable polarity with a meter.',charge:'Added USB-C sink: VBUS → PowerBoost USB input pad; GND → GND. CC termination required; 5 V input only.',boost:'PowerBoost 5V output pad → source isolation. Do not join it directly to the native USB supply.',native:'Original USB-C VBUS → its own isolated source input. Intercepting the CYD VBUS path may be required.',load:'Selected supply → verified CYD 5 V entry. Exact solder point is pending. CYD BAT and 3V3 are unused.',fan:'Fan red → selected supply; fan black → common GND. The fan runs from either selected power source.',data:'Original USB-C data stays connected for programming; supply isolation applies to VBUS.'};
+ let chosen='all';
+ function restore(s){const c=s?.modelContent?.connection||s?.connection;if(notes[c]){chosen=c;select.value=c;}draw();}
+ function draw(){
+  const w=Math.max(288,Math.round(root.getBoundingClientRect().width)), small=w<580, h=small?1260:820;
+  svg.setAttribute('viewBox',`0 0 ${w} ${h}`);svg.style.height=h+'px';
+  let a=[];const t=(x,y,s,cls='',anchor='start')=>a.push(`<text x="${x}" y="${y}" class="${cls}" text-anchor="${anchor}">${s}</text>`);
+  const rect=(x,y,width,height,cls,rx=5)=>a.push(`<rect x="${x}" y="${y}" width="${width}" height="${height}" rx="${rx}" class="${cls}"/>`);
+  const circle=(x,y,r,cls)=>a.push(`<circle cx="${x}" cy="${y}" r="${r}" class="${cls}"/>`);
+  const path=(d,cls,extra='')=>a.push(`<path d="${d}" class="${cls}" ${extra}/>`);
+  a.push('<title id="cyd-wire-title">CYD hardware wiring illustration</title><desc id="cyd-wire-desc">Illustrative component positions and paired supply and ground wires. Battery plugs into PowerBoost JST; added USB-C feeds USB input. Booster and original USB power require a source isolation circuit before supplying CYD and fan. Pad positions and CYD solder points are not verified.</desc>');
+  const batt={x:small?40:32,y:42,w:small?w-80:205,h:102};
+  const charge={x:small?90:w-205,y:small?240:67,w:small?w-180:150,h:67};
+  const pb={x:small?55:48,y:small?355:274,w:small?w-110:270,h:160};
+  const fan={x:small?w-122:w-152,y:small?1040:630,w:74,h:74};
+  const iso={x:small?45:370,y:small?600:342,w:small?w-90:w-410,h:105};
+  const cyd={x:small?45:42,y:small?810:589,w:small?w-90:310,h:190};
+  const bp=[batt.x+batt.w-38,batt.y+batt.h],bn=[bp[0]+10,bp[1]];
+  const jp=[pb.x+29,pb.y],jn=[jp[0]+10,jp[1]];
+  const cp=[charge.x+charge.w/2-5,charge.y+charge.h],cn=[cp[0]+10,cp[1]];
+  const up=[pb.x+pb.w-46,pb.y],un=[up[0]+18,up[1]];
+  const op=[pb.x+pb.w,pb.y+95],on=[op[0],op[1]+16];
+  const ip=[iso.x,iso.y+24],ig=[iso.x,iso.y+40];
+  const np=[cyd.x+cyd.w-36,cyd.y],ng=[np[0]+10,np[1]];
+  const ni=[iso.x+iso.w,iso.y+25],nig=[ni[0],ni[1]+16];
+  const out=[iso.x+iso.w/2-5,iso.y+iso.h],gout=[out[0]+12,out[1]];
+  const lp=[cyd.x+38,cyd.y+24],lg=[lp[0]+16,lp[1]];
+  const fp=[fan.x+15,fan.y],fg=[fp[0]+10,fp[1]];
+  const wire=(id,p,n)=>{let opacity=chosen==='all'||chosen===id?1:.13;a.push(`<g opacity="${opacity}" data-connection="${id}">`);path(p,'wire positive');if(n)path(n,'wire ground');a.push('</g>');};
+  rect(18,small?319:220,w-36,h-(small?337:238),'case',16);t(30,small?340:244,'Inside main case','text-small secondary');
+  if(small){
+   wire('battery',`M${bp} V165 H24 V330 H${jp[0]} V${jp[1]}`,`M${bn} V175 H32 V338 H${jn[0]} V${jn[1]}`);
+   wire('charge',`M${cp} V306 H${up[0]} V${up[1]}`,`M${cn} V315 H${un[0]} V${un[1]}`);
+   wire('boost',`M${op} H${w-20} V${ip[1]} H${ip[0]}`,`M${on} H${w-28} V${ig[1]} H${ig[0]}`);
+   wire('native',`M${np} V750 H${w-32} V${ni[1]} H${ni[0]}`,`M${ng} V758 H${w-24} V${nig[1]} H${nig[0]}`);
+   wire('load',`M${out} V775 H${lp[0]} V${lp[1]}`,`M${gout} V785 H${lg[0]} V${lg[1]}`);
+   wire('fan',`M${out} V733 H${w-9} V${fan.y-18} H${fp[0]} V${fp[1]}`,`M${gout} V741 H${w-17} V${fan.y-10} H${fg[0]} V${fg[1]}`);
+  }else{
+   wire('battery',`M${bp} V181 H${jp[0]} V${jp[1]}`,`M${bn} V190 H${jn[0]} V${jn[1]}`);
+   wire('charge',`M${cp} V184 H${up[0]} V${up[1]}`,`M${cn} V193 H${un[0]} V${un[1]}`);
+   wire('boost',`M${op} H${ip[0]-26} V${ip[1]} H${ip[0]}`,`M${on} H${ig[0]-18} V${ig[1]} H${ig[0]}`);
+   wire('native',`M${np} V509 H${w-23} V${ni[1]} H${ni[0]}`,`M${ng} V518 H${w-31} V${nig[1]} H${nig[0]}`);
+   wire('load',`M${out} V535 H${lp[0]} V${lp[1]}`,`M${gout} V545 H${lg[0]} V${lg[1]}`);
+   wire('fan',`M${out} V549 H${fp[0]} V${fp[1]}`,`M${gout} V559 H${fg[0]} V${fg[1]}`);
+  }
+  // Hardware silhouettes; pads are diagram anchors, not physical footprint coordinates.
+  rect(batt.x,batt.y,batt.w,batt.h,'hardware',10);rect(batt.x+8,batt.y+8,batt.w-16,8,'metal',1);
+  t(batt.x+15,batt.y+41,'Protected LiPo · 3.7 V');t(batt.x+15,batt.y+64,'2500 mAh','text-small');t(batt.x,batt.y-12,'Removable battery pod');
+  rect(bp[0]-6,bp[1]-5,32,18,'metal',3);t(batt.x+15,batt.y+88,'+ / −','text-small');
+  t(small?42:48,small?190:207,'Short keyed jumper + case socket','text-small');
+  rect(charge.x,charge.y,charge.w,charge.h,'pcb');rect(charge.x+charge.w/2-23,charge.y-9,46,22,'metal',7);rect(charge.x+charge.w/2-16,charge.y-4,32,8,'chip',4);
+  t(charge.x+charge.w/2,charge.y+32,'USB-C sink','', 'middle');t(charge.x+charge.w/2,charge.y+52,'5 V · CC termination','text-small','middle');
+  t(charge.x+charge.w/2,charge.y-24,'Added charging port','', 'middle');
+  rect(pb.x,pb.y,pb.w,pb.h,'pcb',8);[ [pb.x+12,pb.y+12],[pb.x+pb.w-12,pb.y+12],[pb.x+12,pb.y+pb.h-12],[pb.x+pb.w-12,pb.y+pb.h-12]].forEach(p=>circle(...p,4,'hole'));
+  rect(pb.x+16,pb.y-8,42,28,'metal',3);t(pb.x+17,pb.y+40,'JST BAT','text-small');
+  t(pb.x+pb.w-53,pb.y+29,'USB','text-small');t(pb.x+pb.w-25,pb.y+46,'GND','text-small','end');
+  rect(pb.x+55,pb.y+61,small?24:35,small?24:32,'chip',3);rect(pb.x+(small?93:102),pb.y+55,small?34:48,small?28:40,'metal',4);circle(pb.x+(small?110:126),pb.y+(small?69:75),small?8:11,'chip');
+  t(pb.x+15,pb.y+126,'PowerBoost 1000C');t(pb.x+15,pb.y+147,'Micro-USB unused','text-small');
+  t(pb.x+pb.w-9,pb.y+86,'5V out','text-small','end');t(pb.x+pb.w-9,pb.y+110,'GND','text-small','end');
+  [up,un,op,on].forEach(p=>circle(...p,4,'pad'));
+  rect(iso.x,iso.y,iso.w,iso.h,'pending',6);t(iso.x+iso.w/2,iso.y+32,'Source isolation','', 'middle');t(iso.x+iso.w/2,iso.y+56,'Circuit + parts pending','text-small','middle');t(iso.x+iso.w/2,iso.y+81,'No direct supply join','text-small','middle');
+  rect(cyd.x,cyd.y,cyd.w,cyd.h,'pcb',9);[ [cyd.x+12,cyd.y+12],[cyd.x+cyd.w-12,cyd.y+12],[cyd.x+12,cyd.y+cyd.h-12],[cyd.x+cyd.w-12,cyd.y+cyd.h-12]].forEach(p=>circle(...p,4,'hole'));
+  rect(cyd.x+20,cyd.y+63,small?82:115,65,'metal',4);t(cyd.x+30,cyd.y+100,'ESP32','text-small');
+  t(cyd.x+18,cyd.y+158,'CYD · rear board view');t(cyd.x+18,cyd.y+178,'BAT / 3V3 unused','text-small');
+  rect(np[0]-14,np[1]-8,44,27,'metal',7);rect(np[0]-7,np[1]-4,30,8,'chip',4);
+  t(cyd.x+cyd.w-10,cyd.y+47,'Original USB-C','text-small','end');
+  const lop=chosen==='all'||chosen==='load'?1:.13;
+  path(`M${lp[0]} ${cyd.y} V${lp[1]}`,'wire positive',`opacity="${lop}"`);path(`M${lg[0]} ${cyd.y} V${lg[1]}`,'wire ground',`opacity="${lop}"`);
+  [lp,lg].forEach(p=>circle(...p,4,'pad'));t(cyd.x+20,cyd.y+47,'5 V / GND*','text-small');
+  const dop=chosen==='all'||chosen==='data'?1:.13;
+  path(`M${np[0]+4} ${np[1]+20} V${cyd.y+66} H${cyd.x+63} V${cyd.y+80}`,'wire data',`opacity="${dop}"`);
+  rect(fan.x,fan.y,fan.w,fan.h,'hardware',6);circle(fan.x+37,fan.y+37,27,'metal');
+  for(let j=0;j<5;j++){a.push(`<ellipse cx="${fan.x+37}" cy="${fan.y+24}" rx="10" ry="16" class="chip" transform="rotate(${j*72} ${fan.x+37} ${fan.y+37})"/>`);}circle(fan.x+37,fan.y+37,9,'metal');
+  [[fan.x+7,fan.y+7],[fan.x+67,fan.y+7],[fan.x+7,fan.y+67],[fan.x+67,fan.y+67]].forEach(p=>circle(...p,2.5,'hole'));
+  t(fan.x+37,fan.y+94,'5 V fan','', 'middle');t(fan.x+37,fan.y+113,'Red + / black −','text-small','middle');
+  t(30,h-22,'* CYD solder point pending · parts drawn for wiring clarity','text-small');
+  if(small){a[a.length-1]=`<text x="24" y="${h-42}" class="text-small">* CYD solder point pending</text><text x="24" y="${h-22}" class="text-small">Parts drawn for wiring clarity</text>`;}
+  svg.innerHTML=a.join('');detail.textContent=notes[chosen];
+ }
+ select.addEventListener('change',()=>{chosen=select.value;draw();if(window.openai?.setWidgetState)window.openai.setWidgetState({modelContent:{connection:chosen,design:'CYD battery hardware wiring'},privateContent:null}).catch(()=>{});});
+ window.addEventListener('openai:set_globals',e=>{if(e.detail?.globals?.widgetState)restore(e.detail.globals.widgetState);});
+ new ResizeObserver(draw).observe(root);restore(window.openai?.widgetState);
+})();
+</script>

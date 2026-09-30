@@ -1,5 +1,9 @@
 # Proposed battery and booster wiring
 
+[Open the interactive hardware wiring illustration](viewer/wiring.html).
+The selector highlights each paired wire route and names its connections.
+Component shapes and pad positions are illustrative, not verified footprints.
+
 This is a power-topology diagram, not a finished soldering diagram. PowerBoost
 pin names are documented by Adafruit; the CYD power-entry solder points and
 source-isolation implementation have not been verified on the owner's board.
