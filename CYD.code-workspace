@@ -1,0 +1,12 @@
+{
+	"folders": [
+		{
+			"path": "."
+		},
+		{
+			"name": "PortalBox",
+			"path": "portalbox/PortalBox"
+		}
+	],
+	"settings": {}
+}
