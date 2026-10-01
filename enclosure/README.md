@@ -135,7 +135,9 @@ placements against SCAD constants, and independently exports the two complete
 CAD assemblies to compare their bounding dimensions. Results are recorded in
 `dimension-audit.json`. This proves CAD agreement, not physical hardware fit.
 
-Interactive viewer: serve this enclosure directory with `python -m http.server
+Interactive viewer: open `viewer/index.html` for the styled standalone page.
+Opening the editable `viewer/fragment.html` directly redirects to that page.
+Alternatively, serve this enclosure directory with `python -m http.server
 8779`, then open `http://127.0.0.1:8779/viewer/`. The standalone viewer contains
 the exported meshes and loads Three.js from an approved CDN. `viewer/fragment.html`
 is its editable inline source. The committed snapshot matches this revision;

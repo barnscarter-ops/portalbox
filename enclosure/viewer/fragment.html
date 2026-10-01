@@ -1,3 +1,9 @@
+<script>
+// Directly opening the editable fragment needs the standalone styles and theme.
+if (window.self === window.top && location.pathname.endsWith('/fragment.html')) {
+  location.replace(new URL('index.html', location.href));
+}
+</script>
 <div id="cyd-case-explorer">
   <div class="viz-row"><h2>CYD case · 3D explorer</h2><span class="viz-badge">CAD draft 0.2</span></div>
   <div class="viz-controls">
