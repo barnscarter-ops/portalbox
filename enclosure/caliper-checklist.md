@@ -18,8 +18,8 @@ to convert to enclosure coordinates.
 | 1 | PCB outline | `pcb=[101.5,55.5]` | 101.50 × 55.50 | length + width, edge to edge |
 | 2 | Mount holes | `mounts` (centers 94.5 × 47.9) | Ø 3.20, 4× | see "hole centers" note below |
 | 3 | **BOOT/RESET buttons** | `buttons` → (3.26, 41.47) & (3.26, 14.03) | (3.26, 14.03) & (13.72, 14.03) | button-body center from left + top edges |
-| 4 | Upper-edge connectors | `upper_ports` = 29.44 / 45.17 / 64.1 / 84.1 | read off E32R35T drawing | center + width of each (GPIO39/35, speaker, SPI, I2C) |
-| 5 | Lower-edge connectors | `lower_ports` = 25.48 / 40.02 / 57.89 | read off E32R35T drawing | center + width of each (BAT, UART, microSD) |
+| 4 | Upper-edge connectors | `upper_ports` = 29.44 / 64.1 / 84.1 | read off E32R35T drawing | center + width of each (GPIO39/35, SPI, I2C) |
+| 5 | Lower-edge connectors | `lower_ports` = 40.02 / 57.89 | read off E32R35T drawing | center + width of each (UART, microSD) |
 | 6 | Connector height | `port_z=11`, `port_h=6.5` (provisional) | — no 2D source exists | PCB surface → top of connector (use the depth rod); plus connector body height |
 | 7 | ESP32 module position | `fan=[29,44]` | — | module corners from board edges → center; confirm the fan exhaust lands over the chip |
 | 8 | PowerBoost mount area | `boost=[52,34]` | 45 × 23 × 10 (Adafruit 1000C) | only if the physical board is in hand |
@@ -41,6 +41,11 @@ to convert to enclosure coordinates.
    *absolute* enclosure coordinates, while every board feature adds `O`. If they
    were meant PCB-relative, they are **2.9 mm off** toward the corner. Measure the
    ESP32 module's true position and confirm the fan sits over it.
+3. **Speaker / BAT classification (from `03f8ada`).** That commit assumes the
+   speaker is rear-facing and BAT is inward-facing, so neither needs an edge
+   cutout. That assumption is itself **unverified** — confirm against the board
+   photos (or the pending verification prompt) that those connectors really don't
+   need openings in the shell.
 
 ## How to measure hole centers
 
