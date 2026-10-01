@@ -8,8 +8,10 @@ pcb=[101.5,55.5]; gap=0.5; wall=2.4;
 W=pcb[0]+2*(gap+wall); H=pcb[1]+2*(gap+wall);
 O=gap+wall; depth=31; seam=3;
 // Centers from the dimensioned rear drawing after rotating into landscape.
-upper_ports=[[29.44,8],[45.17,9],[64.1,12],[84.1,12]];
-lower_ports=[[25.48,9],[40.02,13],[57.89,16]];
+// Owner board checked 2026-09-30: speaker faces rear; BAT faces inward.
+// Both stay enclosed. These lists include only outward-facing edge connectors.
+upper_ports=[[29.44,8],[64.1,12],[84.1,12]]; // GPIO39/35, SPI, I2C
+lower_ports=[[40.02,13],[57.89,16]]; // UART, microSD
 port_z=11; port_h=6.5; // provisional vertical offsets / clearances
 mounts=[[O+3.5,O+3.8],[O+98,O+3.8],[O+3.5,O+51.7],[O+98,O+51.7]];
 buttons=[[O+3.26,O+41.47],[O+3.26,O+14.03]];

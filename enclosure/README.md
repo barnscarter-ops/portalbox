@@ -28,6 +28,9 @@ were appearance studies; these previews come from the fabrication geometry.
   PCB 101.50 × 55.50 mm; mounting centers 94.50 × 47.90 mm, holes 3.20 mm.
   Rotated rear view: USB left; upper edge GPIO39/35, speaker, SPI, I2C;
   lower edge BAT, UART, microSD. RESET and BOOT face rearward.
+  Owner inspection and photos (2026-09-30) correct the connector orientations:
+  BAT faces inward; speaker faces rearward. Both remain enclosed with no access
+  cutouts. UART, microSD, GPIO39/35, SPI, I2C and USB retain edge openings.
 - Stylus, owner tape measurements (2026-09-30): length 87.31 mm, widest handle
   about 7.94 mm, shaft about 4.76 mm. Approximate, not caliper measurements.
   Tube bore 8.8 mm with a quarter-turn bayonet cap and a bought flexible tether.

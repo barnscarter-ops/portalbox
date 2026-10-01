@@ -24,7 +24,7 @@
       "part": "shell",
       "watertight": true,
       "bodies": 1,
-      "volume_mm3": 42991.7,
+      "volume_mm3": 43272.5,
       "bounds_mm": [
         [
           0.0,
@@ -37,7 +37,7 @@
           34.4
         ]
       ],
-      "triangles": 6138
+      "triangles": 6098
     },
     {
       "part": "rail_cover",
