@@ -24,7 +24,7 @@
       "part": "shell",
       "watertight": true,
       "bodies": 1,
-      "volume_mm3": 43272.5,
+      "volume_mm3": 43816.96,
       "bounds_mm": [
         [
           0.0,
@@ -37,13 +37,13 @@
           34.4
         ]
       ],
-      "triangles": 6098
+      "triangles": 6838
     },
     {
       "part": "rail_cover",
       "watertight": true,
       "bodies": 1,
-      "volume_mm3": 3099.67,
+      "volume_mm3": 2585.39,
       "bounds_mm": [
         [
           0.0,
@@ -56,7 +56,7 @@
           3.65
         ]
       ],
-      "triangles": 420
+      "triangles": 428
     },
     {
       "part": "stylus_cap",
@@ -81,12 +81,12 @@
       "part": "pod",
       "watertight": true,
       "bodies": 1,
-      "volume_mm3": 17515.6,
+      "volume_mm3": 17479.85,
       "bounds_mm": [
         [
-          -8.0,
+          -9.5,
           0.0,
-          -3.65
+          -4.15
         ],
         [
           66.0,
@@ -94,7 +94,7 @@
           14.0
         ]
       ],
-      "triangles": 1996
+      "triangles": 3308
     },
     {
       "part": "pod_lid",

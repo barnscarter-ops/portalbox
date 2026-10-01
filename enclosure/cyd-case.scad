@@ -1,4 +1,4 @@
-// CYD 3.5 enclosure, revision 0.2: physical fit unverified.
+// CYD 3.5 enclosure, revision 0.3: UNVALIDATED rail electrical design.
 // Rear-view coordinates: USB left, I2C upper right. Units: mm.
 // LCDWiki E32R35T_Size.pdf is a family reference, not proof of owner-board fit.
 part="assembly"; // bezel, shell, rail_cover, stylus_cap, pod, pod_lid, divider, button, fit_coupon
@@ -24,6 +24,46 @@ tube_y=-5; tube_z=depth-3; tube_x=7;
 pod_x=44; pod_y=5; pod_z=depth+rail_slop;
 pod_size=[66,56,14]; battery=[60,50,7.3];
 boost=[52,34,16.6]; boost_size=[45,23,10];
+// AXIAL pogo mechanism: 2 x Mill-Max 0947-0-15-20-77-14-11-0 in shell.
+// Each: 5.6 A derated (7 A catalogue), 12.217 mm free overall length,
+// 2.286 mm stroke; nominal 1.60 mm mounting bore, verify/ream after printing.
+// Pod: 2 x Harwin S70-125161545R gold pads, 2.5(y) x 1.6(z) x .15(x), 6 A.
+// Pads require separate insulated carriers / solder lands; NOT bare wire blobs.
+// Contacts run along x, not rubbing across rail; y pitch 4 mm, z axis 28.6.
+// GND lane y=22.5: free tip x=38.0; BAT+ lane y=26.5: x=37.0.
+// Both pod pad faces x=36.7 when seated. Insertion (-x): GND makes at
+// remaining travel 1.30 mm; BAT+ at .30 mm. Removal: BAT+ breaks FIRST.
+// Separate blind pad wells recess live faces 2.20 mm behind hood front x=34.5.
+// One-sided shoe rib/rail groove blocks reversed orientation before contacts.
+// Lock: ISO 4762 M3x12 screw + DIN 934 M3 nut (5.5 AF, 2.4 thick), no magnets.
+// Pin/pad fit, tolerances, force, insulation and >=2 A load require bench tests.
+contact_y=[22.5,26.5]; contact_z=28.6; contact_tip_x=[38,37];
+contact_face_x=36.7; contact_guard_x=34.5;
+contact_stroke=2.286; contact_length=12.217;
+contact_bore=1.6; pad_pocket=[2.7,1.8];
+module x_bore(x,y,z,d,h){translate([x,y,z]) rotate([0,90,0]) cylinder(d=d,h=h);}
+module lock_nut_cut(){
+ // Inside-accessible hex trap; captive in rotation, trapped after shell assembly.
+ // Load nut from underside; upper seat z=25.1 leaves 1.9 mm floor above it.
+ translate([40,rail_y+6.5,20.9]) rotate([0,0,30]) cylinder(d=5.7/cos(30),h=4.2,$fn=6);
+ bore(40,rail_y+6.5,22.3,3.3,10);
+}
+module rail_dock(){difference(){union(){
+ translate([19,rail_y+0.5,depth-rail_base-rail_h-0.1]) cube([15.45,12,4.6]);
+ // Telescoping insulating comb extends .8 mm beyond even the free GND tip.
+ // Each metal pin is recessed in its own lane, including when USB is charging.
+ for(y=[18.5,24.1,28.1]) translate([34.4,y,27.4]) cube([4.4,y==24.1?0.8:2.4,2.7]);
+ translate([34.4,18.5,29.5]) cube([4.4,12,0.6]);
+}
+ for(i=[0:1]){
+  // Bore opens to internal solder-cup access via a separate rear pocket.
+  x_bore(contact_tip_x[i]-contact_length,contact_y[i],contact_z,contact_bore,12);
+  translate([contact_tip_x[i]-contact_length-1,contact_y[i]-1.1,24.8]) cube([3,2.2,5]);
+ }
+ // Preserve the flush-cover fastener's existing insert seat.
+ bore(rail_x+8,rail_y+6.5,depth-8,4.2,4);
+ bore(rail_x+8,rail_y+6.5,depth-4.1,3.2,5);
+}}
 module rounded(w,h,z,r=3){linear_extrude(z) hull() for(x=[r,w-r],y=[r,h-r]) translate([x,y]) circle(r);}
 module bore(x,y,z,d,h){translate([x,y,z]) cylinder(d=d,h=h);}
 module screw_cuts(z,h,d=3.3){for(p=mounts) bore(p[0],p[1],z,d,h);}
@@ -47,6 +87,9 @@ module track_cuts(){
  linear_extrude(rail_len+1) polygon([[0,-4.6],[-rail_h,-3.1],[-rail_h,3.1],[0,4.6]]);
  translate([rail_x+1.8,rail_y+0.1,depth-1.45]) cube([rail_len,12.8,2]);
  for(x=[rail_x+8,40]){bore(x,rail_y+6.5,depth-8,4.2,4);bore(x,rail_y+6.5,depth-4.1,3.2,5);}
+ // Asymmetric key groove. Opposite rail wall stays solid.
+ translate([contact_guard_x,26.8,28.1]) cube([W-contact_guard_x+2,3.9,1.2]);
+ lock_nut_cut();
 }
 module boost_cradle(){
  // Insulated pad and retaining corner blocks; actual PCB fit pending.
@@ -63,9 +106,8 @@ module edge_cuts(){
  translate([-1,O+27.75-6,port_z-3.5]) cube([wall+3,12,7]);
  // intake slots on the right edge, behind the PCB components
  for(y=[14:7:28]) translate([W-wall-1,y,20]) cube([wall+3,3.5,6]);
- // Charge and keyed battery socket reservations; final connector SKUs pending.
+ // USB-C charge input reservation only; exterior battery socket removed.
  translate([72,H-wall-1,20]) cube([14,wall+3,8]);
- translate([W-wall-1,37,20]) cube([wall+3,10,7]);
 }
 module tube(){difference(){
  union(){translate([tube_x,tube_y,tube_z]) rotate([0,90,0]) cylinder(d=12.8,h=tube_len);
@@ -80,7 +122,7 @@ module tube(){difference(){
  // cross-hole for a bought silicone tether / cord
  translate([tube_x+tube_len-4,-2,tube_z+5]) rotate([90,0,0]) cylinder(d=2,h=8);
 }}
-module shell(){difference(){union(){
+module shell(){union(){difference(){union(){
  difference(){translate([0,0,seam]) rounded(W,H,depth-seam);
  translate([wall,wall,seam-0.1]) rounded(W-2*wall,H-2*wall,depth-seam-wall+0.1,1.2);}
  // Four columns join shell to bezel and support board at its hole locations.
@@ -89,6 +131,8 @@ module shell(){difference(){union(){
  for(p=buttons) bore(p[0],p[1],16,8,depth-16);
  // Fan frame seats directly against rear skin; no posts invade its envelope.
  tube(); female_track(); boost_cradle();
+ // Captive-nut boss supports repeated lock tightening without a thin rail skin.
+ translate([35,19.5,21]) cube([10,10,6]);
 }
  edge_cuts(); track_cuts();
  screw_cuts(8.9,10,2.6); // blind M3 pilots; screws installed from bezel
@@ -100,10 +144,13 @@ module shell(){difference(){union(){
  cylinder(d=23,h=wall+1); cylinder(d=7,h=wall+2);
  for(a=[0:45:315]) rotate([0,0,a]) translate([-1.1,0,-1]) cube([2.2,15,wall+4]);}
  for(v=fan_holes) bore(fan[0]+v[0],fan[1]+v[1],depth-13,2.8,15);
-}}
+} rail_dock();}}
 module rail_cover(){difference(){union(){
  shoe(rail_len-2); translate([0,-6.3,rail_h-rail_slop-1.4]) rounded(rail_len-2,12.6,1.4,1);
-} bore(6,0,-1,3.3,9);}}
+} bore(6,0,-1,3.3,9);
+ // Flat cover bridges the electrical stop; its shoe clears the dock and pins.
+ translate([-1,-6.4,-1]) cube([22.9,12.8,3.85]);
+}}
 module stylus_cap(){difference(){union(){
  cylinder(d=12.8,h=3); translate([0,0,3]) cylinder(d=8.2,h=4);
  for(a=[0,180]) rotate([0,0,a]) translate([3.8,-0.7,5]) cube([1.3,1.4,1.2]);
@@ -119,15 +166,42 @@ module pod(){difference(){union(){
  for(x=[4,pod_size[0]-4],y=[4,pod_size[1]-4]) bore(x,y,11,6,3);
  // Mechanical dovetail foot, on outside of pod floor
  translate([0,rail_y+6.5-pod_y,-rail_h+rail_slop]) shoe(58);
+ // Positive overlap joins foot to floor; avoid coplanar/disconnected STL faces.
+ translate([0,rail_y+6.5-pod_y-2.5,-0.1]) cube([58,5,0.2]);
+ // One-sided anti-reversal key, inside a matching female-track groove.
+ translate([0,27-pod_y,28.3-pod_z]) cube([58,3.45,0.8]);
  // External lock tab: screw path never enters the pouch footprint.
- translate([-8,rail_y+6.5-pod_y-6,-rail_h+rail_slop]) cube([8.2,12,7]);
+ translate([contact_guard_x-pod_x,rail_y+6.5-pod_y,-rail_h+rail_slop]) shoe(pod_x-contact_guard_x+0.2);
+ // Wide lock flange stays ABOVE rear skin; underside follows the dovetail.
+ translate([contact_guard_x-pod_x,rail_y+6.5-pod_y-6,-0.1]) cube([pod_x-contact_guard_x+0.2,12,3.45]);
+ // Local guarded-contact floor: .6 mm below pads, .2 mm above track bottom.
+ translate([contact_guard_x-pod_x,20.5-pod_y,27.2-pod_z]) cube([4.5,8,0.6]);
 }
  // Lid pilots, kept above pouch compartment.
  for(x=[4,pod_size[0]-4],y=[4,pod_size[1]-4]) bore(x,y,11,2.4,5);
- // M3 lock screw reaches the right-hand insert in the fixed track.
+ // M3x12 lock screw reaches the DIN934 nut in the reinforced fixed-track boss.
  bore(-4,rail_y+6.5-pod_y,-5,3.3,10);
- // Battery lead exits through a strain-relieved grommet.
- translate([pod_size[0]-wall-1,35,8]) rotate([0,90,0]) cylinder(d=5,h=wall+3);
+ // Two isolated front-facing pad wells; the 2.2 mm hood guards live battery pads.
+ for(y=contact_y){
+  translate([contact_guard_x-pod_x-0.1,y-pod_y-pad_pocket[0]/2,contact_z-pod_z-pad_pocket[1]/2])
+   cube([contact_face_x-contact_guard_x+0.1,pad_pocket[0],pad_pocket[1]]);
+  // Insulated carrier slot, accessed from above; pad front sits at contact_face_x.
+  translate([contact_face_x-pod_x,y-pod_y-1.35,contact_z-pod_z-0.9]) cube([1.2,2.7,6]);
+  // Lead tunnels detour around M3 screw and rise inside the LEFT pod wall.
+  // They exit above the pouch at z=44, not through its occupied footprint.
+  wy=y==contact_y[0]?21:28;
+  bore(37.2-pod_x,y-pod_y,contact_z-pod_z,1.3,4);
+  translate([37.2-pod_x,(y==contact_y[0]?21:y)-pod_y,32.5-pod_z]) rotate([-90,0,0])
+   cylinder(d=1.3,h=1.5);
+  x_bore(37.2-pod_x,wy-pod_y,32.5-pod_z,1.3,8);
+  bore(45.2-pod_x,wy-pod_y,32.5-pod_z,1.3,11.5);
+  x_bore(45.2-pod_x,wy-pod_y,44-pod_z,1.3,3);
+ }
+ // Reliefs receive the insulating comb; individual pad islands remain separate.
+ for(y=[18.3,23.9,27.9])
+  translate([contact_guard_x-pod_x-0.1,y-pod_y,27.2-pod_z])
+   cube([4.6,y==23.9?1.2:2.8,3.1]);
+ translate([contact_guard_x-pod_x-0.1,18.3-pod_y,29.3-pod_z]) cube([4.6,12.4,1]);
 } }
 module pod_lid(){difference(){rounded(pod_size[0],pod_size[1],2.4);
  for(x=[4,pod_size[0]-4],y=[4,pod_size[1]-4]) bore(x,y,-1,2.8,5);
@@ -161,4 +235,5 @@ else if(part=="pod_lid") pod_lid();
 else if(part=="divider") divider();
 else if(part=="button") button();
 else if(part=="fit_coupon") fit_coupon();
+else if(part=="dock_clearance_check") intersection(){shell();translate([pod_x,pod_y,pod_z]) pod();}
 else assert(false,"Unknown part");

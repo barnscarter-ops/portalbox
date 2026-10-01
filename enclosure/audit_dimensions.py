@@ -18,7 +18,8 @@ parser.add_argument('--openscad', required=True, help='OpenSCAD executable')
 OPENSCAD = parser.parse_args().openscad
 source = (ROOT / 'cyd-case.scad').read_text()
 env = {}
-for name, expr in re.findall(r'\b(\w+)\s*=\s*([^;]+);', source.split('module rounded')[0]):
+constants = re.sub(r'//[^\n]*', '', source.split('module x_bore')[0])
+for name, expr in re.findall(r'\b(\w+)\s*=\s*([^;]+);', constants):
     try:
         tree = ast.parse(expr, mode='eval')
         allowed = (ast.Expression, ast.Constant, ast.Name, ast.Load, ast.List,
@@ -83,6 +84,7 @@ with tempfile.TemporaryDirectory(prefix='cyd-dimension-audit-') as directory:
             assert result.returncode == 0 and 'ERROR:' not in result.stderr, result.stderr
             independent = trimesh.load_mesh(path).bounds
             assert np.allclose(independent, bounds, atol=0.001), (mode, independent, bounds)
+            print(f'{mode}: independent assembly bounds match', flush=True)
         assemblies[mode] = {'bounds_mm': bounds.round(5).tolist(),
                             'size_mm': (bounds[1]-bounds[0]).round(5).tolist()}
 
@@ -90,6 +92,14 @@ pod_body = env['pod_size'][2]
 shoe_depth = env['rail_h']-env['rail_slop']
 gap = env['pod_z']-env['depth']
 overlap = shoe_depth-gap
+guard_depth = -parts['pod']['local_bounds_mm'][0][2]
+guard_overlap = guard_depth-gap
+assert abs(env['depth']+parts['pod']['full_part_size_mm'][2]-guard_overlap+2.4-47.75) < 0.001
+compression = np.array(env['contact_tip_x'])-env['contact_face_x']
+assert np.all(compression > 0) and np.all(compression < env['contact_stroke'])
+assert abs(compression[0]-compression[1]-1) < 0.00001
+assert env['contact_y'][1]-env['contact_y'][0] == 4
+assert abs(env['contact_face_x']-env['contact_guard_x']-2.2) < 0.00001
 assert abs(assemblies['battery']['size_mm'][2]-(env['depth']+gap+pod_body+2.4)) < 0.001
 assert np.allclose(np.diff(np.array(env['mounts']), axis=0)[0], [94.5, 0])
 assert abs(env['mounts'][2][1]-env['mounts'][0][1]-47.9) < 0.0001
@@ -109,6 +119,8 @@ report = {
     'units': 'mm', 'main_body_mm': [env['W'], env['H'], env['depth']],
     'pod_depth_accounting': {'body': pod_body, 'shoe': shoe_depth,
         'body_to_case_gap': round(gap, 5), 'shoe_in_case_overlap': round(overlap, 5),
+        'deepest_guard_projection': round(guard_depth, 5),
+        'guard_in_case_overlap': round(guard_overlap, 5),
         'lid': 2.4, 'installed_added_depth': round(gap+pod_body+2.4, 5)},
     'parts': parts, 'assemblies': assemblies, 'hardware_envelopes': hardware,
     'construction_dimensions': {
@@ -123,7 +135,16 @@ report = {
         'lower_edge_ports_center_x_width_mm': env['lower_ports'],
         'board_edge_port_z_center_height_mm': [env['port_z'], env['port_h']],
         'charge_socket_reservation_width_height_mm': [14, 8],
-        'battery_socket_reservation_width_height_mm': [10, 7],
+        'rail_power_contacts': {'mechanism': 'two axial pogo pins and two insulated gold pads',
+            'status': 'UNVALIDATED electrical design',
+            'pin_sku': '0947-0-15-20-77-14-11-0', 'pad_sku': 'S70-125161545R',
+            'pin_derated_current_A': 5.6, 'pad_current_A': 6, 'design_load_A': 2,
+            'y_axes_mm': env['contact_y'], 'z_axis_mm': env['contact_z'],
+            'free_tip_x_mm_ground_positive': env['contact_tip_x'],
+            'seated_pad_face_x_mm': env['contact_face_x'],
+            'compression_mm_ground_positive': compression.round(5).tolist(),
+            'engagement_order': 'GND first; BAT+ last. Removal BAT+ first.',
+            'sequence_margin_mm': 1, 'pod_live_face_recess_mm': 2.2},
         'fan_mounting_pitch_mm': [20, 20], 'fan_hole_diameter_mm': 2.8,
         'fan_exhaust_diameter_mm': 23,
     },

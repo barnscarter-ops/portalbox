@@ -1,13 +1,15 @@
-# CYD case draft 0.2 — physical validation pending
+# CYD case draft 0.3 — physical and electrical validation pending
 
-Revision 0.2 (2026-09-30): recessed rail and flush cover; PowerBoost moved
-beside fan inside main shell; battery-only pod reduced from 26 to 14 mm.
+Revision 0.3 (2026-09-30): keyed axial pogo dock carries battery BAT+/GND
+through the recessed rail. Exterior battery socket, pod grommet and jumper removed.
+PowerBoost remains inside the main shell; the battery-only pod body remains 14 mm.
 Complete printed assembly with pod: approximately 110 × 72.7 × 47.75 mm.
 In inches: 4.33 × 2.86 × 1.88. Depth accounting: 31 mm main body + 0.35 mm
 pod gap + 14 mm pod body + 2.4 mm lid = 47.75 mm. Pod-only bounding depth is
-17.65 mm because its 3.65 mm mounting shoe projects inward; 3.30 mm of the shoe
-overlaps the case, so the pod-only depth is not additive. Full width 74 mm
-includes its 8 mm external lock tab; its storage body is 66 mm wide.
+18.15 mm because the local contact guard projects inward 4.15 mm; 3.80 mm of that
+projection overlaps the case. The dovetail shoe itself is 3.65 mm deep, with
+3.30 mm inside the case. The pod-only depth is not additive. Full width 75.5 mm
+includes its 9.5 mm guarded docking/lock tab; its storage body is 66 mm wide.
 Without a battery pod, the full assembled envelope is 108 × 72.7 × 37 mm
 (4.25 × 2.86 × 1.46 in), including stylus holder and cap tether lug.
 The recessed track is 92.3 mm long and its 90.3 mm cover reaches the side entry.
@@ -43,6 +45,13 @@ were appearance studies; these previews come from the fabrication geometry.
 - Fan candidate: Sunon MF25100V2-1000U-A99, 25 × 25 × 10 mm, 5 V,
   rated 65 mA. Three mounting holes are provisional pending the delivered fan.
   <https://www.digikey.com/en/products/detail/sunon-fans/MF25100V2-1000U-A99/7805270>.
+- Rail contacts: 2 × Mill-Max **0947-0-15-20-77-14-11-0** solder-cup pogo pins,
+  5.6 A derated, paired with 2 × Harwin **S70-125161545R** gold pads, 6 A.
+  Pad carriers and actual pin retention remain provisional. See `WIRING.md`
+  for source links, dimensions, sequencing and the unvalidated 2 A load assumption.
+- Pod lock: **ISO 4762 M3 × 12 screw + DIN 934 M3 hex nut**, 5.5 mm AF,
+  2.4 mm thick; reinforced printed hex trap, loaded from shell interior.
+  Full thread engagement, screw-tip clearance and retention require a test print.
 
 ## Construction
 
@@ -54,8 +63,12 @@ the touch film. Shell height is 31 mm to allow fan and board clearance.
 
 The female dovetail track is recessed, with a blind bottom, a left stop and a
 right entry. Its removable cover or the battery pod uses a matching shoe.
-Retaining screws use separate M3 insert seats in the track. The pod's locking
-tab is outside the battery footprint. The rail carries mechanical loads only.
+The cover retains its M3 insert seat. The pod uses an M3 screw and hex nut in
+a reinforced trap: the locking tab is outside the pouch footprint. The rail now
+carries battery power through separate guarded contacts as well as alignment.
+An asymmetric shoe rib blocks reversed insertion. At the seating stop the lock
+hole aligns; tighten the screw before use and remove it before sliding the pod.
+Contacts compress along the slide axis, not against the dovetail sidewalls.
 It currently supports one cover or one module at a time; stacking additional
 modules has not been designed or load-tested.
 
@@ -75,11 +88,16 @@ expansion; do not clamp the pouch. Lid screw pilots stay above the cell envelope
 The PowerBoost cradle is inside the main case, opposite the fan in the upper
 region. Secure it on an insulating pad after checking actual component and
 antenna clearance. The old divider export is a legacy part, unused in revision
-0.2. Switch, connector retention and circuit hardware remain provisional.
+0.2 and later. Switch, contact retention and circuit hardware remain provisional.
+Pod leads run in separate internal tunnels, around the lock screw, then up the
+left pod wall to emerge above the pouch. No lead passes through an exterior hole.
+The flush rail cover has an underside relief around the dock, with a minimum
+0.8 mm skin locally. The original three-body fit coupon remains a rail/bore test;
+it does not validate the new key or contacts. Test those on an unpowered pod/shell.
 
 ## Proposed power arrangement — not a validated wiring instruction
 
-Battery pod lead -> keyed case socket -> internal PowerBoost BAT.
+Battery -> recessed shoe pads -> shell pogo pins -> internal PowerBoost BAT/GND.
 PowerBoost regulated output -> isolated CYD 5 V feed and 5 V fan.
 The built-in PowerBoost charge input is Micro-USB, not USB-C. A separate USB-C
 sink socket with CC termination can feed its USB/GND charge-input pads. Never
@@ -90,8 +108,12 @@ References: Adafruit 2465 product page and its pinouts guide:
 https://learn.adafruit.com/adafruit-powerboost-1000c-load-share-usb-charge-boost/pinouts
 The CYD BAT socket stays unused; do not attach the battery to two chargers.
 An internal switch can control PowerBoost EN rather than carrying battery current.
-The battery cable needs strain relief and a keyed disconnect so the pod detaches.
-Power/data for future modules use separate appropriate cables, never the rail.
+Only short insulated internal leads remain, with mechanical strain relief.
+Ground makes first and breaks last; BAT+ makes last and breaks first, with 1 mm
+nominal sequencing travel. Two insulating lanes and guarded contact recesses
+must prevent bridging or reversed mating. Disable the booster and unplug charge
+power before swapping the pod. Future accessories must explicitly match this
+battery-voltage interface; it is not a generic 5 V accessory connector.
 
 Owner-reported CYD BAT polarity (2026-09-30): negative toward USB, positive
 toward microSD. Inventory agrees: positive nearest UART. Verify both connector
@@ -119,7 +141,9 @@ CAD renders and watertight meshes do not prove physical fit. Before a full print
 3. Print `fit_coupon.stl` for dovetail and stylus bore, then a short tube/cap
    section and board-edge samples before committing to the complete case.
 4. Confirm three fan mounting holes and adequate grille clearance.
-5. Check pouch clearance, wire routes, button travel and screw lengths.
+5. Check pouch clearance, internal wire routes, key/comb/carrier fit, button
+   travel, nut retention and screw lengths. With no battery/charger, confirm
+   contact polarity, non-bridging and engagement order through repeated insertion.
 6. Bench-test power consumption, charging, USB source isolation and fan startup;
    then measure temperature under actual screen/Wi-Fi load.
 
@@ -129,7 +153,10 @@ material is PETG; orientation/support strategy must be agreed with the print
 provider. STL files retain CAD assembly coordinates; arrange each part on the
 bed in the slicer. Do not print the combined assembly as a single part.
 
-Dimension verification: `python audit_dimensions.py --openscad PATH_TO_OPENSCAD_COM` compares STL vertex data
+After exporting, run `python enclosure/pack_viewer.py` from the repository root
+to refresh the explorer's actual CAD meshes. Regenerate its standalone wrapper
+after editing the fragment. Dimension verification:
+`python enclosure/audit_dimensions.py --openscad PATH_TO_OPENSCAD_COM` compares STL vertex data
 against embedded viewer meshes (0.005 mm rounding tolerance), verifies viewer
 placements against SCAD constants, and independently exports the two complete
 CAD assemblies to compare their bounding dimensions. Results are recorded in
@@ -152,3 +179,8 @@ Rebuild with Python, numpy, trimesh, networkx and a local OpenSCAD installation:
 ```text
 python export.py --openscad PATH_TO_OPENSCAD_COM
 ```
+
+Revision 0.3 CAD check: all nine exports pass watertight/winding/body-count
+checks. `dock_clearance_check` produces an empty shell/pod intersection at the
+seated placement (`dock-clearance.json`). This checks printed solid clearance
+only, not contact fit, sliding force, key strength or electrical behavior.

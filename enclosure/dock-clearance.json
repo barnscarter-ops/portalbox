@@ -1,0 +1,9 @@
+{
+  "source_sha256": "5d864ee31f60bc297bd653d604b2957e2df39db989ffaa68369b975b38ad5d43",
+  "method": "OpenSCAD CGAL intersection, part=dock_clearance_check",
+  "result": "Current top level object is empty.",
+  "date": "2026-09-30",
+  "scope": "Printed shell and pod at final seated placement; excludes purchased hardware.",
+  "limitations": "No physical fit, insertion force, electrical contact order or load validation.",
+  "hash_basis": "UTF-8 source with LF newlines"
+}

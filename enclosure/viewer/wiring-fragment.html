@@ -1,6 +1,6 @@
 <div id="cyd-power-wiring">
   <h2>CYD · battery and charger wiring</h2>
-  <div class="viz-controls"><label class="form-label">Inspect connection<select class="form-select" id="cyd-wire-select"><option value="all">All wiring</option><option value="battery">Battery jumper</option><option value="charge">Added USB-C charge input</option><option value="boost">Booster output</option><option value="native">Original CYD USB-C power</option><option value="load">Selected supply to CYD</option><option value="fan">Fan power</option><option value="data">Programming data</option></select></label></div>
+  <div class="viz-controls"><label class="form-label">Inspect connection<select class="form-select" id="cyd-wire-select"><option value="all">All wiring</option><option value="battery">Rail battery contacts</option><option value="charge">Added USB-C charge input</option><option value="boost">Booster output</option><option value="native">Original CYD USB-C power</option><option value="load">Selected supply to CYD</option><option value="fan">Fan power</option><option value="data">Programming data</option></select></label></div>
   <div class="cyd-legend text-small"><span><i class="cyd-positive"></i>Positive supply</span><span><i class="cyd-ground"></i>Common ground</span><span><i class="cyd-data"></i>USB data</span><span>Illustrative pad positions · not a soldering template</span></div>
   <svg id="cyd-wire-drawing" role="img" aria-labelledby="cyd-wire-title cyd-wire-desc"></svg>
   <div id="cyd-wire-detail" class="text-small" aria-live="polite"></div>
@@ -32,7 +32,7 @@
 <script>
 (()=>{
  const root=document.getElementById('cyd-power-wiring'), svg=root.querySelector('#cyd-wire-drawing'), select=root.querySelector('#cyd-wire-select'), detail=root.querySelector('#cyd-wire-detail');
- const notes={all:'Battery and USB grounds are common. Dashed isolation area: circuit and parts still unresolved.',battery:'Protected LiPo → short keyed jumper → case socket → PowerBoost JST. Verify cable polarity with a meter.',charge:'Added USB-C sink: VBUS → PowerBoost USB input pad; GND → GND. CC termination required; 5 V input only.',boost:'PowerBoost 5V output pad → source isolation. Do not join it directly to the native USB supply.',native:'Original USB-C VBUS → its own isolated source input. Intercepting the CYD VBUS path may be required.',load:'Selected supply → verified CYD 5 V entry. Exact solder point is pending. CYD BAT and 3V3 are unused.',fan:'Fan red → selected supply; fan black → common GND. The fan runs from either selected power source.',data:'Original USB-C data stays connected for programming; supply isolation applies to VBUS.'};
+ const notes={all:'Battery and USB grounds are common. Dashed isolation area: circuit and parts still unresolved.',battery:'Protected LiPo → guarded axial rail contacts → internal BAT/GND wires. GND makes first; BAT+ makes last and breaks first. Meter-test before connecting battery.',charge:'Added USB-C sink: VBUS → PowerBoost USB input pad; GND → GND. CC termination required; 5 V input only.',boost:'PowerBoost 5V output pad → source isolation. Do not join it directly to the native USB supply.',native:'Original USB-C VBUS → its own isolated source input. Intercepting the CYD VBUS path may be required.',load:'Selected supply → verified CYD 5 V entry. Exact solder point is pending. CYD BAT and 3V3 are unused.',fan:'Fan red → selected supply; fan black → common GND. The fan runs from either selected power source.',data:'Original USB-C data stays connected for programming; supply isolation applies to VBUS.'};
  let chosen='all';
  function restore(s){const c=s?.modelContent?.connection||s?.connection;if(notes[c]){chosen=c;select.value=c;}draw();}
  function draw(){
@@ -42,7 +42,7 @@
   const rect=(x,y,width,height,cls,rx=5)=>a.push(`<rect x="${x}" y="${y}" width="${width}" height="${height}" rx="${rx}" class="${cls}"/>`);
   const circle=(x,y,r,cls)=>a.push(`<circle cx="${x}" cy="${y}" r="${r}" class="${cls}"/>`);
   const path=(d,cls,extra='')=>a.push(`<path d="${d}" class="${cls}" ${extra}/>`);
-  a.push('<title id="cyd-wire-title">CYD hardware wiring illustration</title><desc id="cyd-wire-desc">Illustrative component positions and paired supply and ground wires. Battery plugs into PowerBoost JST; added USB-C feeds USB input. Booster and original USB power require a source isolation circuit before supplying CYD and fan. Pad positions and CYD solder points are not verified.</desc>');
+  a.push('<title id="cyd-wire-title">CYD hardware wiring illustration</title><desc id="cyd-wire-desc">Illustrative component positions and paired supply and ground wires. Battery mates through guarded rail contacts to PowerBoost BAT/GND; added USB-C feeds USB input. Booster and original USB power require a source isolation circuit before supplying CYD and fan. Pad positions and CYD solder points are not verified.</desc>');
   const batt={x:small?40:32,y:42,w:small?w-80:205,h:102};
   const charge={x:small?90:w-205,y:small?240:67,w:small?w-180:150,h:67};
   const pb={x:small?55:48,y:small?355:274,w:small?w-110:270,h:160};
@@ -81,12 +81,13 @@
   rect(batt.x,batt.y,batt.w,batt.h,'hardware',10);rect(batt.x+8,batt.y+8,batt.w-16,8,'metal',1);
   t(batt.x+15,batt.y+41,'Protected LiPo · 3.7 V');t(batt.x+15,batt.y+64,'2500 mAh','text-small');t(batt.x,batt.y-12,'Removable battery pod');
   rect(bp[0]-6,bp[1]-5,32,18,'metal',3);t(batt.x+15,batt.y+88,'+ / −','text-small');
-  t(small?42:48,small?190:207,'Short keyed jumper + case socket','text-small');
+  rect(small?20:jp[0]-8,small?321:216,8,14,'metal',1);rect(small?20:jp[0]-8,small?340:235,8,14,'metal',1);
+  t(small?42:48,small?190:207,'Guarded rail dock · GND first / BAT+ last','text-small');
   rect(charge.x,charge.y,charge.w,charge.h,'pcb');rect(charge.x+charge.w/2-23,charge.y-9,46,22,'metal',7);rect(charge.x+charge.w/2-16,charge.y-4,32,8,'chip',4);
   t(charge.x+charge.w/2,charge.y+32,'USB-C sink','', 'middle');t(charge.x+charge.w/2,charge.y+52,'5 V · CC termination','text-small','middle');
   t(charge.x+charge.w/2,charge.y-24,'Added charging port','', 'middle');
   rect(pb.x,pb.y,pb.w,pb.h,'pcb',8);[ [pb.x+12,pb.y+12],[pb.x+pb.w-12,pb.y+12],[pb.x+12,pb.y+pb.h-12],[pb.x+pb.w-12,pb.y+pb.h-12]].forEach(p=>circle(...p,4,'hole'));
-  rect(pb.x+16,pb.y-8,42,28,'metal',3);t(pb.x+17,pb.y+40,'JST BAT','text-small');
+  rect(pb.x+16,pb.y-8,42,28,'metal',3);t(pb.x+17,pb.y+40,'BAT / GND','text-small');
   t(pb.x+pb.w-53,pb.y+29,'USB','text-small');t(pb.x+pb.w-25,pb.y+46,'GND','text-small','end');
   rect(pb.x+55,pb.y+61,small?24:35,small?24:32,'chip',3);rect(pb.x+(small?93:102),pb.y+55,small?34:48,small?28:40,'metal',4);circle(pb.x+(small?110:126),pb.y+(small?69:75),small?8:11,'chip');
   t(pb.x+15,pb.y+126,'PowerBoost 1000C');t(pb.x+15,pb.y+147,'Micro-USB unused','text-small');

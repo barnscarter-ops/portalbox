@@ -11,6 +11,8 @@
     "shoe": 3.65,
     "body_to_case_gap": 0.35,
     "shoe_in_case_overlap": 3.3,
+    "deepest_guard_projection": 4.15,
+    "guard_in_case_overlap": 3.8,
     "lid": 2.4,
     "installed_added_depth": 16.75
   },
@@ -98,9 +100,9 @@
     "pod": {
       "local_bounds_mm": [
         [
-          -8.0,
+          -9.5,
           0.0,
-          -3.65
+          -4.15
         ],
         [
           66.0,
@@ -109,9 +111,9 @@
         ]
       ],
       "full_part_size_mm": [
-        74.0,
+        75.5,
         56.0,
-        17.65
+        18.15
       ],
       "embedded_max_rounding_error_mm": 0.005
     },
@@ -295,6 +297,30 @@
         34,
         16.6
       ]
+    },
+    "rail_pins": {
+      "size_mm": [
+        11.917,
+        1.6,
+        1.6
+      ],
+      "position_mm": [
+        24.783,
+        25.7,
+        27.8
+      ]
+    },
+    "pod_pads": {
+      "size_mm": [
+        0.15,
+        2.5,
+        1.6
+      ],
+      "position_mm": [
+        36.7,
+        25.25,
+        27.8
+      ]
     }
   },
   "construction_dimensions": {
@@ -347,10 +373,32 @@
       14,
       8
     ],
-    "battery_socket_reservation_width_height_mm": [
-      10,
-      7
-    ],
+    "rail_power_contacts": {
+      "mechanism": "two axial pogo pins and two insulated gold pads",
+      "status": "UNVALIDATED electrical design",
+      "pin_sku": "0947-0-15-20-77-14-11-0",
+      "pad_sku": "S70-125161545R",
+      "pin_derated_current_A": 5.6,
+      "pad_current_A": 6,
+      "design_load_A": 2,
+      "y_axes_mm": [
+        22.5,
+        26.5
+      ],
+      "z_axis_mm": 28.6,
+      "free_tip_x_mm_ground_positive": [
+        38,
+        37
+      ],
+      "seated_pad_face_x_mm": 36.7,
+      "compression_mm_ground_positive": [
+        1.3,
+        0.3
+      ],
+      "engagement_order": "GND first; BAT+ last. Removal BAT+ first.",
+      "sequence_margin_mm": 1,
+      "pod_live_face_recess_mm": 2.2
+    },
     "fan_mounting_pitch_mm": [
       20,
       20
