@@ -49,11 +49,11 @@ were appearance studies; these previews come from the fabrication geometry.
   5.6 A derated, paired with 2 × Harwin **S70-125161545R** gold pads, 6 A.
   Pad carriers and actual pin retention remain provisional. See `WIRING.md`
   for source links, dimensions, sequencing and the unvalidated 2 A load assumption.
-- Pod lock: **ISO 4762 M3 × 16 screw + M3 heat-set insert**, nominal Ø4.6 ×
+- Pod lock: **ISO 4762 M3 × 12 screw + M3 heat-set insert**, nominal Ø4.6 ×
   4.2 mm, installed from shell interior in the reinforced boss. One Ø4.1 × 4.2 mm
   seat replaces the loose nut and overlapping rail seat. A Ø5.8 × 3.2 mm head
   counterbore recesses the head 0.2 mm; nominal insert engagement is 4.2 mm.
-  Screw-tip clearance (tip z=15.50) and insert retention require a test print.
+  Screw-tip clearance (tip z=19.50) and insert retention require a test print.
 
 ## Construction
 

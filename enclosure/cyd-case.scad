@@ -39,7 +39,7 @@ boost=[O+52,O+34,16.6]; boost_size=[45,23,10]; // x/y PCB-relative + O; z case-r
 // remaining travel 1.50 mm; BAT+ at .50 mm. Removal: BAT+ breaks FIRST.
 // Separate blind pad wells recess live faces 2.00 mm behind hood front x=34.5.
 // One-sided shoe rib/rail groove blocks reversed orientation before contacts.
-// Lock: ISO 4762 M3x16 screw + heat-set M3 insert; no loose nut or magnets.
+// Lock: ISO 4762 M3x12 screw + heat-set M3 insert; no loose nut or magnets.
 // Head counterbore: diameter 5.8, depth 3.2; 3 mm head sits .2 below flange.
 // Pin/pad fit, tolerances, force, insulation and >=2 A load require bench tests.
 contact_y=[22.5,26.5]; contact_z=28.6; contact_tip_x=[38,37];
@@ -186,7 +186,7 @@ module pod(){difference(){union(){
 }
  // Lid pilots, kept above pouch compartment.
  for(x=[4,pod_size[0]-4],y=[4,pod_size[1]-4]) bore(x,y,11,2.4,5);
- // M3x16: head seat case z=31.50, flange z=34.70, screw tip z=15.50.
+ // M3x12: head seat case z=31.50, flange z=34.70, screw tip z=19.50.
  // Full nominal 4.2 mm insert engagement; verify tip/component clearance physically.
  bore(-4,rail_y+6.5-pod_y,-5,3.3,10);
  bore(-4,rail_y+6.5-pod_y,0.15,5.8,3.3); // 3.2 mm counterbore + .1 overcut
