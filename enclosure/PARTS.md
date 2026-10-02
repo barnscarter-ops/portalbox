@@ -23,14 +23,14 @@ Updated 2026-10-01 (rail-carried battery contacts integrated, commit `7200d7f`).
 |---|---|---|
 | Mill-Max **0947-0-15-20-77-14-11-0** solder-cup pogo pin | 2 | 7 A (derated 5.6 A), 2.286 mm stroke |
 | Harwin **S70-125161545R** gold contact pad | 2 | 6 A, 2.5×1.6×0.15 mm |
-| ISO 4762 **M3×12** socket-head screw | 1 | pod lock-tab |
-| DIN 934 **M3** hex nut | 1 | captive nut |
+| ISO 4762 **M3×16** socket-head screw | 1 | pod lock-tab; Ø5.8 × 3.2 mm head counterbore |
+| **M3 heat-set insert** | 1 | nominal 4.6 mm OD × 4.2 mm long; retained in lock boss, replaces loose nut |
 | 24 AWG stranded insulated wire | 4 runs | internal leads |
 
 ## Fasteners
 
-- M3 heat-set inserts (4.2 mm OD × ~4 mm) — one pack
-- M3 screws — small assortment (M3×8 / ×10 / ×12)
+- M3 heat-set inserts (nominal 4.6 mm OD × ~4.2 mm) — one pack; default Ø4.1 mm seat, tune to supplier guidance
+- M3 screws — small assortment (M3×8 / ×10 / ×16)
 
 ## Connectors / misc
 

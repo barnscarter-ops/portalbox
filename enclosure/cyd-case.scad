@@ -7,6 +7,8 @@ $fn=48;
 pcb=[101.5,55.5]; gap=0.5; wall=2.4;
 W=pcb[0]+2*(gap+wall); H=pcb[1]+2*(gap+wall);
 O=gap+wall; depth=31; seam=3;
+// Nominal M3 heat-set insert: 4.6 mm OD, about 4.2 mm long. Tune to bought hardware.
+insert_od=4.6; insert_seat_d=4.1; insert_seat_depth=4.2;
 // Centers from the dimensioned rear drawing after rotating into landscape.
 // Owner board checked 2026-09-30: speaker faces rear; BAT faces inward.
 // Both stay enclosed. These lists include only outward-facing edge connectors.
@@ -15,7 +17,9 @@ lower_ports=[[40.02,13],[57.89,16]]; // UART, microSD
 port_z=11; port_h=6.5; // provisional vertical offsets / clearances
 mounts=[[O+3.5,O+3.8],[O+98,O+3.8],[O+3.5,O+51.7],[O+98,O+51.7]];
 buttons=[[O+3.26,O+41.47],[O+3.26,O+14.03]];
-fan=[29,44]; fan_spacing=20; // Sunon has THREE mounting holes; fourth position unused
+// Fan x/y start PCB-relative; add O for case coordinates. ESP32 module position
+// is unmeasured: confirm final fan center over the module with calipers.
+fan=[O+29,O+44]; fan_spacing=20; // Sunon has THREE mounting holes; fourth position unused
 fan_holes=[[-10,-10],[-10,10],[10,10]];
 rail_x=15; rail_y=18; rail_len=W-rail_x; rail_base=2; rail_h=4;
 rail_slop=0.35; // profile allowance; mating gap varies with seating height
@@ -23,7 +27,7 @@ stylus_len=87.31; stylus_bore=8.8; tube_len=98;
 tube_y=-5; tube_z=depth-3; tube_x=7;
 pod_x=44; pod_y=5; pod_z=depth+rail_slop;
 pod_size=[66,56,14]; battery=[60,50,7.3];
-boost=[52,34,16.6]; boost_size=[45,23,10];
+boost=[O+52,O+34,16.6]; boost_size=[45,23,10]; // x/y PCB-relative + O; z case-relative
 // AXIAL pogo mechanism: 2 x Mill-Max 0947-0-15-20-77-14-11-0 in shell.
 // Each: 5.6 A derated (7 A catalogue), 12.217 mm free overall length,
 // 2.286 mm stroke; nominal 1.60 mm mounting bore, verify/ream after printing.
@@ -31,22 +35,24 @@ boost=[52,34,16.6]; boost_size=[45,23,10];
 // Pads require separate insulated carriers / solder lands; NOT bare wire blobs.
 // Contacts run along x, not rubbing across rail; y pitch 4 mm, z axis 28.6.
 // GND lane y=22.5: free tip x=38.0; BAT+ lane y=26.5: x=37.0.
-// Both pod pad faces x=36.7 when seated. Insertion (-x): GND makes at
-// remaining travel 1.30 mm; BAT+ at .30 mm. Removal: BAT+ breaks FIRST.
-// Separate blind pad wells recess live faces 2.20 mm behind hood front x=34.5.
+// Both pod pad faces x=36.5 when seated. Insertion (-x): GND makes at
+// remaining travel 1.50 mm; BAT+ at .50 mm. Removal: BAT+ breaks FIRST.
+// Separate blind pad wells recess live faces 2.00 mm behind hood front x=34.5.
 // One-sided shoe rib/rail groove blocks reversed orientation before contacts.
-// Lock: ISO 4762 M3x12 screw + DIN 934 M3 nut (5.5 AF, 2.4 thick), no magnets.
+// Lock: ISO 4762 M3x16 screw + heat-set M3 insert; no loose nut or magnets.
+// Head counterbore: diameter 5.8, depth 3.2; 3 mm head sits .2 below flange.
 // Pin/pad fit, tolerances, force, insulation and >=2 A load require bench tests.
 contact_y=[22.5,26.5]; contact_z=28.6; contact_tip_x=[38,37];
-contact_face_x=36.7; contact_guard_x=34.5;
+contact_face_x=36.5; contact_guard_x=34.5;
 contact_stroke=2.286; contact_length=12.217;
 contact_bore=1.6; pad_pocket=[2.7,1.8];
 module x_bore(x,y,z,d,h){translate([x,y,z]) rotate([0,90,0]) cylinder(d=d,h=h);}
-module lock_nut_cut(){
- // Inside-accessible hex trap; captive in rotation, trapped after shell assembly.
- // Load nut from underside; upper seat z=25.1 leaves 1.9 mm floor above it.
- translate([40,rail_y+6.5,20.9]) rotate([0,0,30]) cylinder(d=5.7/cos(30),h=4.2,$fn=6);
- bore(40,rail_y+6.5,22.3,3.3,10);
+module lock_insert_cut(){
+ // Heat-set from shell interior into the existing boss, z=21..25.2 by default.
+ // Melted-in retention removes the loose-nut hazard; 1.8 mm roof remains above.
+ // Single seat at x=40 replaces BOTH the hex pocket and overlapping rail seat.
+ bore(40,rail_y+6.5,20.99,insert_seat_d,insert_seat_depth+0.01);
+ bore(40,rail_y+6.5,20.9,3.3,12);
 }
 module rail_dock(){difference(){union(){
  translate([19,rail_y+0.5,depth-rail_base-rail_h-0.1]) cube([15.45,12,4.6]);
@@ -61,7 +67,7 @@ module rail_dock(){difference(){union(){
   translate([contact_tip_x[i]-contact_length-1,contact_y[i]-1.1,24.8]) cube([3,2.2,5]);
  }
  // Preserve the flush-cover fastener's existing insert seat.
- bore(rail_x+8,rail_y+6.5,depth-8,4.2,4);
+ bore(rail_x+8,rail_y+6.5,depth-8,insert_seat_d,4);
  bore(rail_x+8,rail_y+6.5,depth-4.1,3.2,5);
 }}
 module rounded(w,h,z,r=3){linear_extrude(z) hull() for(x=[r,w-r],y=[r,h-r]) translate([x,y]) circle(r);}
@@ -70,7 +76,8 @@ module screw_cuts(z,h,d=3.3){for(p=mounts) bore(p[0],p[1],z,d,h);}
 module bezel(){difference(){
  union(){rounded(W,H,seam); for(p=mounts) bore(p[0],p[1],seam-0.1,6.4,4.5);}
  // Oversize touch-visible window, with no pressure on resistive touch film.
- translate([W/2-78.6/2,H/2-51.2/2,-1]) rounded(78.6,51.2,5,0.8);
+ // Center: PCB x=51.80, case x=54.70; shift +1.05 toward antenna, same size.
+ translate([W/2+1.05-78.6/2,H/2-51.2/2,-1]) rounded(78.6,51.2,5,0.8);
  screw_cuts(-1,10); for(p=mounts) bore(p[0],p[1],-0.01,6.2,1.4);
 }}
 // Recessed dovetail: reinforcement projects inward; rear surface stays at z=31.
@@ -78,18 +85,18 @@ module female_track(){difference(){
  translate([rail_x,rail_y,depth-rail_base-rail_h-0.1]) cube([rail_len,13,rail_base+rail_h+0.1]);
  translate([rail_x+2,rail_y+6.5,depth-rail_h]) rotate([0,90,0])
  linear_extrude(rail_len+1) polygon([[0,-4.6],[-rail_h,-3.1],[-rail_h,3.1],[0,4.6]]);
- // M3 nut recess under stop; lock screw in shoe threads into captive nut.
- for(x=[rail_x+8,40]){bore(x,rail_y+6.5,depth-8,4.2,4);
+ // Keep only the cover seat here; pod lock uses its separate heat-set boss.
+ for(x=[rail_x+8]){bore(x,rail_y+6.5,depth-8,insert_seat_d,4);
  bore(x,rail_y+6.5,depth-4.1,3.2,5);}
 }}
 module track_cuts(){
  translate([rail_x+2,rail_y+6.5,depth-rail_h]) rotate([0,90,0])
  linear_extrude(rail_len+1) polygon([[0,-4.6],[-rail_h,-3.1],[-rail_h,3.1],[0,4.6]]);
  translate([rail_x+1.8,rail_y+0.1,depth-1.45]) cube([rail_len,12.8,2]);
- for(x=[rail_x+8,40]){bore(x,rail_y+6.5,depth-8,4.2,4);bore(x,rail_y+6.5,depth-4.1,3.2,5);}
+ for(x=[rail_x+8]){bore(x,rail_y+6.5,depth-8,insert_seat_d,4);bore(x,rail_y+6.5,depth-4.1,3.2,5);}
  // Asymmetric key groove. Opposite rail wall stays solid.
  translate([contact_guard_x,26.8,28.1]) cube([W-contact_guard_x+2,3.9,1.2]);
- lock_nut_cut();
+ lock_insert_cut();
 }
 module boost_cradle(){
  // Insulated pad and retaining corner blocks; actual PCB fit pending.
@@ -131,13 +138,13 @@ module shell(){union(){difference(){union(){
  for(p=buttons) bore(p[0],p[1],16,8,depth-16);
  // Fan frame seats directly against rear skin; no posts invade its envelope.
  tube(); female_track(); boost_cradle();
- // Captive-nut boss supports repeated lock tightening without a thin rail skin.
+ // Heat-set lock boss supports repeated tightening without a thin rail skin.
  translate([35,19.5,21]) cube([10,10,6]);
 }
  edge_cuts(); track_cuts();
  screw_cuts(8.9,10,2.6); // blind M3 pilots; screws installed from bezel
  // Press-fit insert seats at front ends of columns, not behind battery.
- screw_cuts(9.09,4.2,4.2);
+ screw_cuts(9.09,insert_seat_depth,insert_seat_d);
  for(p=buttons) bore(p[0],p[1],15,4.8,depth-13);
  // Fan exhaust with hub and eight integrated spokes, no exposed rotor.
  translate([fan[0],fan[1],depth-wall-0.1]) difference(){
@@ -179,9 +186,11 @@ module pod(){difference(){union(){
 }
  // Lid pilots, kept above pouch compartment.
  for(x=[4,pod_size[0]-4],y=[4,pod_size[1]-4]) bore(x,y,11,2.4,5);
- // M3x12 lock screw reaches the DIN934 nut in the reinforced fixed-track boss.
+ // M3x16: head seat case z=31.50, flange z=34.70, screw tip z=15.50.
+ // Full nominal 4.2 mm insert engagement; verify tip/component clearance physically.
  bore(-4,rail_y+6.5-pod_y,-5,3.3,10);
- // Two isolated front-facing pad wells; the 2.2 mm hood guards live battery pads.
+ bore(-4,rail_y+6.5-pod_y,0.15,5.8,3.3); // 3.2 mm counterbore + .1 overcut
+ // Two isolated front-facing pad wells; the 2.0 mm hood guards live battery pads.
  for(y=contact_y){
   translate([contact_guard_x-pod_x-0.1,y-pod_y-pad_pocket[0]/2,contact_z-pod_z-pad_pocket[1]/2])
    cube([contact_face_x-contact_guard_x+0.1,pad_pocket[0],pad_pocket[1]]);
@@ -189,10 +198,10 @@ module pod(){difference(){union(){
   translate([contact_face_x-pod_x,y-pod_y-1.35,contact_z-pod_z-0.9]) cube([1.2,2.7,6]);
   // Lead tunnels detour around M3 screw and rise inside the LEFT pod wall.
   // They exit above the pouch at z=44, not through its occupied footprint.
-  wy=y==contact_y[0]?21:28;
+  wy=y==contact_y[0]?20.8:28.2; // .15 mm CAD clearance to new head counterbore
   bore(37.2-pod_x,y-pod_y,contact_z-pod_z,1.3,4);
-  translate([37.2-pod_x,(y==contact_y[0]?21:y)-pod_y,32.5-pod_z]) rotate([-90,0,0])
-   cylinder(d=1.3,h=1.5);
+  translate([37.2-pod_x,(y==contact_y[0]?wy:y)-pod_y,32.5-pod_z]) rotate([-90,0,0])
+   cylinder(d=1.3,h=1.7);
   x_bore(37.2-pod_x,wy-pod_y,32.5-pod_z,1.3,8);
   bore(45.2-pod_x,wy-pod_y,32.5-pod_z,1.3,11.5);
   x_bore(45.2-pod_x,wy-pod_y,44-pod_z,1.3,3);

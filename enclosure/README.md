@@ -49,22 +49,25 @@ were appearance studies; these previews come from the fabrication geometry.
   5.6 A derated, paired with 2 × Harwin **S70-125161545R** gold pads, 6 A.
   Pad carriers and actual pin retention remain provisional. See `WIRING.md`
   for source links, dimensions, sequencing and the unvalidated 2 A load assumption.
-- Pod lock: **ISO 4762 M3 × 12 screw + DIN 934 M3 hex nut**, 5.5 mm AF,
-  2.4 mm thick; reinforced printed hex trap, loaded from shell interior.
-  Full thread engagement, screw-tip clearance and retention require a test print.
+- Pod lock: **ISO 4762 M3 × 16 screw + M3 heat-set insert**, nominal Ø4.6 ×
+  4.2 mm, installed from shell interior in the reinforced boss. One Ø4.1 × 4.2 mm
+  seat replaces the loose nut and overlapping rail seat. A Ø5.8 × 3.2 mm head
+  counterbore recesses the head 0.2 mm; nominal insert engagement is 4.2 mm.
+  Screw-tip clearance (tip z=15.50) and insert retention require a test print.
 
 ## Construction
 
 Front bezel and rear shell capture the board between spacers and rear columns.
 Four screws go through the bezel and board's mounting holes into M3 inserts in
 the rear columns. Confirm screw length and insert diameter against chosen
-hardware; current seats are 4.2 mm diameter × 4.2 mm deep. Do not tighten against
+hardware; column seats default to 4.1 mm diameter × 4.2 mm deep for nominal 4.6 mm OD
+inserts. Tune `insert_od`, `insert_seat_d` and `insert_seat_depth` to bought hardware. Do not tighten against
 the touch film. Shell height is 31 mm to allow fan and board clearance.
 
 The female dovetail track is recessed, with a blind bottom, a left stop and a
 right entry. Its removable cover or the battery pod uses a matching shoe.
-The cover retains its M3 insert seat. The pod uses an M3 screw and hex nut in
-a reinforced trap: the locking tab is outside the pouch footprint. The rail now
+The cover retains its M3 insert seat. The pod uses an M3 screw and heat-set insert in
+a reinforced boss: the locking tab is outside the pouch footprint. The rail now
 carries battery power through separate guarded contacts as well as alignment.
 An asymmetric shoe rib blocks reversed insertion. At the seating stop the lock
 hole aligns; tighten the screw before use and remove it before sliding the pod.
@@ -142,7 +145,7 @@ CAD renders and watertight meshes do not prove physical fit. Before a full print
    section and board-edge samples before committing to the complete case.
 4. Confirm three fan mounting holes and adequate grille clearance.
 5. Check pouch clearance, internal wire routes, key/comb/carrier fit, button
-   travel, nut retention and screw lengths. With no battery/charger, confirm
+   travel, insert retention and screw lengths. With no battery/charger, confirm
    contact polarity, non-bridging and engagement order through repeated insertion.
 6. Bench-test power consumption, charging, USB source isolation and fan startup;
    then measure temperature under actual screen/Wi-Fi load.
