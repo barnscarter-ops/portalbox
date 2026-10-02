@@ -1,58 +1,65 @@
-# Handoff — 2026-10-01 (pre-printer arrival)
+# Handoff — 2026-10-02 (parts ordering + printer prep)
 
-State snapshot for Claude (review) and the next Hermes session (resume).
+For the next Hermes session. All repos are clean and pushed. Start here.
 
-## What's done
+## THE TASK
 
-- **CYD enclosure rev 0.2** (`enclosure/cyd-case.scad`): bezel + shell + battery
-  pod, recessed dovetail rail, stylus tube, fan, PowerBoost cradle.
-- **Rail-carried battery contacts** (commit `7200d7f`): two Mill-Max pogo pins
-  (shell) → two Harwin gold pads (pod shoe). Guarded, keyed, ground-first /
-  positive-last sequencing. No exterior cable.
-- **Codex dimension audit** (`audit_dimensions.py` → `dimension-audit.json`):
-  CAD internally consistent, all parts watertight.
-- **Parts list**: `enclosure/PARTS.md`.
-- **Caliper checklist**: `enclosure/caliper-checklist.md` (physical fit still
-  unverified).
-- **Hardware inventory updated**: `flipper-protoboard` (4 blank boards) added;
-  flipper dev-board count corrected (1 Marauder + 2 unflashed). Pushed to
-  `hardware-inventory` + `Coding_Practice`.
-- **Flipper build 1 (DHT11)**: specced (`Flipper/build-1-dht11.md`), Unitemp FAP
-  downloaded (`Flipper/apps/unitemp_2.1.fap`).
-- **Printer**: Bambu Lab P1S + AMS ordered ($549, Amazon, arriving soon).
+Find and order the parts for the CYD enclosure + its battery power system, and
+prepare for the Bambu P1S arrival. Work from `enclosure/PARTS.md`.
 
-## Open items
+## Current state (all pushed, trees clean)
 
-- **CYD physical fit UNVERIFIED.** Datasheet (E32R35T) is a family reference.
-  Flagged in `caliper-checklist.md`: button position `41.47` vs `13.72`
-  (likely coordinate flip), `fan`/`boost` missing the `O` offset,
-  `port_z`/`port_h` provisional.
-- **Source isolation / power mux**: parts still to be selected (`WIRING.md`).
-- **Rail contacts need bench validation before energizing** — 5-step checklist
-  in `WIRING.md` (ground-first order, no bridging, no reversed engagement,
-  current-limited 3 A test).
-- **Flipper build 2** (ESP32-S3 Super Mini WiFi board): planned, not started.
+- **CYD repo** (`portalbox`) @ `dca41ea` — Claude's full audit done; 6 fixes
+  applied by Codex (`9e0c037`); lock screw reduced M3×16→M3×12 (`dca41ea`).
+- **Hardware inventory** + **Coding_Practice** mirror synced (flipper protoboard
+  added, dev-board count corrected).
 
-## Next (when the printer arrives)
+## The design (final, as audited)
 
-1. Order PETG + the `PARTS.md` items.
-2. P1S first boot → PLA calibration print → print `fit_coupon` in PETG.
-3. Caliper-measure the CYD board (checklist) to close the button/fan/port
-   questions before committing to the full shell.
-4. Continue Flipper build 1 (solder DHT11) + sideload Unitemp.
+- Rail-carried battery power: 2× Mill-Max 0947 pogo pins (shell) → 2× Harwin S70
+  gold pads (pod shoe). Ground-first / positive-last, 1 mm sequencing margin.
+- **Source isolation SOLVED** — the CYD's existing Schottky D1 (B5819W) blocks
+  backfeed; inject booster 5 V at **VCC5V (D1 cathode)**, never VBUS. Verify D1
+  and Q3 orientation on the real board with a meter.
+- Lock: **M3 heat-set insert + M3×12 socket screw** (counterbored; tip z=19.50).
+- Physical fit **UNVERIFIED** — needs calipers (`caliper-checklist.md`).
 
-## Key files / repos
+## Parts to order (full detail in `enclosure/PARTS.md`)
 
-| Thing | Location |
+- Bambu **PETG-HF** (1 kg)
+- Adafruit **328** LiPo (3.7 V 2500 mAh) + Adafruit **PowerBoost 1000C**
+- Sunon **MF25100V2-1000U-A99** fan (confirm 3-hole pattern before buying)
+- Mill-Max **0947-0-15-20-77-14-11-0** pogo pin ×2 + Harwin **S70-125161545R** pad ×2
+- **M3 heat-set inserts** (nominal 4.6 mm OD — confirm actual OD before finalizing seats)
+- **M3×12** screws (bezel ×4 + lock ×1) + small assortment (×8/×10/×12)
+- USB-C sink breakout (5.1 kΩ CC termination)
+- Slide switch (SPDT), heat-shrink, 24 AWG stranded wire
+- **Calipers** (150 mm, ±0.05 mm) — needed for physical-fit verification
+
+Open sub-items: Harwin pad carriers are still provisional (settle before ordering
+the pads); confirm the insert OD matches the seat before buying inserts.
+
+## Before printing the full shell
+
+1. Caliper-measure the CYD board (`caliper-checklist.md`): port sizes, `port_z`/
+   `port_h`, ESP32 module + fan position, button positions, PCB-to-panel offset.
+2. Print `fit_coupon` first (PETG), verify rail/screw/stylus fit + lock-screw tip
+   clearance (tip z=19.50).
+3. Bench-validate the rail contacts (sequence, polarity, no bridging, 3 A)
+   before any LiPo is connected.
+
+## Key locations
+
+| Thing | Path |
 |---|---|
-| CYD repo (remote `portalbox`) | `C:\Workspace\Active\CYD` — `enclosure/` (SCAD, PARTS.md, WIRING.md, caliper-checklist.md, audit) |
-| Flipper (not a git repo) | `C:\Workspace\Active\Flipper` — `build-1-dht11.md`, `apps/unitemp_2.1.fap`, `portalbox-flipper/PLAN.md` |
-| Hardware inventory (authoritative) | `C:\Workspace\Active\Hardware\Inventory` |
-| PortalBox plan (Flipper) | `Flipper/portalbox-flipper/PLAN.md` |
+| CYD repo (`portalbox`) | `C:\Workspace\Active\CYD` — `enclosure/` (PARTS.md, WIRING.md, caliper-checklist.md, cyd-case.scad, README.md) |
+| Hardware inventory | `C:\Workspace\Active\Hardware\Inventory` |
+| Flipper (not a repo) | `C:\Workspace\Active\Flipper` — `build-1-dht11.md`, `apps/unitemp_2.1.fap` |
+| Printer | Bambu P1S + AMS (ordered, $549 Amazon, 4× PLA included) |
 
 ## User context
 
-- Carter is an electrician — fluent in continuity/voltage/polarity/grounding,
-  owns a multimeter. Learning gap is PCB design + embedded firmware, not
-  electrical fundamentals. Wants "complete build" projects, does them properly,
-  values verification.
+Carter — electrician, owns a multimeter, fluent in electrical fundamentals;
+learning CAD / 3D-printing / embedded firmware. Drives Codex + Claude for design;
+Hermes reviews and commits. Wants "do it right" + verification. Printer arriving
+soon.
