@@ -133,6 +133,16 @@ Exact CYD solder points and this circuit have not been validated. Final
 harness, source switching and protection still
 need selection and bench verification. No runtime or available-current claim.
 
+## Tested fit results
+
+Physically tested facts only; update when the material changes.
+
+| Date | Part | Printer / filament | Result |
+| --- | --- | --- | --- |
+| 2026-10-03 | `fit_coupon_series` (0.30 / 0.25 / 0.20 / 0.15 mm per side) | Bambu P1S, PLA | 0.15 mm fit perfectly against the old shoe |
+
+Open: the case will be printed in PETG, which can fit differently from PLA. `rail_slop` stays 0.35 until the series is reprinted in PETG; then set it to the PETG winner.
+
 ## Review and verification gates
 
 CAD renders and watertight meshes do not prove physical fit. Before a full print:
