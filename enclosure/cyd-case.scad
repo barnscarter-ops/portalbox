@@ -219,7 +219,9 @@ module divider(){difference(){rounded(pod_size[0]-2*wall-0.6,pod_size[1]-2*wall-
  // cable passage from pouch JST lead; smooth before assembly
  translate([3,1,-1]) rounded(10,6,4,1);
 }}
-module fit_coupon(){difference(){union(){cube([28,17,3]); translate([3,8.5,3]) shoe(22);}
+// Slider matches rail_cover/pod: narrow neck on the plate, wide tip away. Print plate-down; flip it to slide into the groove block.
+module fit_coupon(){difference(){union(){cube([28,17,3]);
+ translate([3,8.5,2.9+rail_h-rail_slop]) mirror([0,0,1]) shoe(22);} // neck sunk 0.1 into plate for a clean union
  bore(10,8.5,-1,3.3,12);}
  translate([0,24,0]) difference(){cube([28,16,7]);translate([0,8,3]) rotate([0,90,0])
  linear_extrude(30) polygon([[0,-4.6],[-4,-3.1],[-4,3.1],[0,4.6]]);}
