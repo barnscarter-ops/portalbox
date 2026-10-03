@@ -228,7 +228,7 @@ module fit_coupon(){difference(){union(){cube([28,17,3]); translate([3,8.5,3]) s
 module assembly(){
  color([0.15,0.18,0.21]) bezel(); color([0.22,0.25,0.28]) shell();
  // illustrative screen and PCB envelopes, not fabrication geometry
- color([0.02,0.06,0.09]) translate([W/2-77.84/2,H/2-50.56/2,3.2]) cube([77.84,50.56,1.2]);
+ color([0.02,0.06,0.09]) translate([W/2+1.05-77.84/2,H/2-50.56/2,3.2]) cube([77.84,50.56,1.2]);
  if(with_pod){color([0.32,0.35,0.38]) translate([pod_x,pod_y,pod_z]) pod();
  color([0.19,0.22,0.25]) translate([pod_x,pod_y,pod_z+pod_size[2]]) pod_lid();}
  else color([0.32,0.35,0.38]) translate([rail_x+2,rail_y+6.5,depth-rail_h+rail_slop]) rail_cover();
