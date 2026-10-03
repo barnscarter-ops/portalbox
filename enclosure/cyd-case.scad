@@ -105,8 +105,8 @@ module boost_cradle(){
  for(y=[boost[1]-1.5,boost[1]+boost_size[1]])
  translate([boost[0],y,boost[2]+10]) cube([boost_size[0],1.5,depth-boost[2]-10]);
 }
-module shoe(len=80){rotate([0,90,0]) linear_extrude(len)
- polygon([[0,-4.6+rail_slop],[-rail_h+rail_slop,-3.1+rail_slop],[-rail_h+rail_slop,3.1-rail_slop],[0,4.6-rail_slop]]);}
+module shoe(len=80,c=rail_slop){rotate([0,90,0]) linear_extrude(len)
+ polygon([[0,-4.6+c],[-rail_h+c,-3.1+c],[-rail_h+c,3.1-c],[0,4.6-c]]);}
 module edge_cuts(){
  for(p=upper_ports) translate([O+p[0]-p[1]/2,H-wall-1,port_z-port_h/2]) cube([p[1],wall+3,port_h]);
  for(p=lower_ports) translate([O+p[0]-p[1]/2,-1,port_z-port_h/2]) cube([p[1],wall+3,port_h]);
@@ -220,9 +220,14 @@ module divider(){difference(){rounded(pod_size[0]-2*wall-0.6,pod_size[1]-2*wall-
  translate([3,1,-1]) rounded(10,6,4,1);
 }}
 // Slider matches rail_cover/pod: narrow neck on the plate, wide tip away. Print plate-down; flip it to slide into the groove block.
-module fit_coupon(){difference(){union(){cube([28,17,3]);
- translate([3,8.5,2.9+rail_h-rail_slop]) mirror([0,0,1]) shoe(22);} // neck sunk 0.1 into plate for a clean union
- bore(10,8.5,-1,3.3,12);}
+module coupon_slider(c=rail_slop,label=""){difference(){union(){cube([28,17,3]);
+ translate([3,8.5,2.9+rail_h-c]) mirror([0,0,1]) shoe(22,c);} // neck sunk 0.1 into plate for a clean union
+ bore(10,8.5,-1,3.3,12);
+ // label engraved in the underside, mirrored so it reads correctly once the slider is flipped
+ if(label!="") translate([20,8.5,-0.01]) mirror([1,0,0]) linear_extrude(0.4) text(label,size=5,halign="center",valign="center");}}
+// Clearance series: labels are per-side clearance in hundredths of a mm (30 = 0.30). Same groove block as fit_coupon.
+module fit_coupon_series(){for(i=[0:3]) translate([0,i*20,0]) coupon_slider([0.30,0.25,0.20,0.15][i],str([30,25,20,15][i]));}
+module fit_coupon(){coupon_slider();
  translate([0,24,0]) difference(){cube([28,16,7]);translate([0,8,3]) rotate([0,90,0])
  linear_extrude(30) polygon([[0,-4.6],[-4,-3.1],[-4,3.1],[0,4.6]]);}
  translate([38,0,0]) difference(){cube([14,14,15]);bore(7,7,-1,stylus_bore,18);}
@@ -237,6 +242,7 @@ module assembly(){
  color([0.32,0.35,0.38]) translate([tube_x+tube_len+3,tube_y,tube_z]) rotate([0,-90,0]) stylus_cap();
 }
 if(part=="assembly") assembly();
+else if(part=="fit_coupon_series") fit_coupon_series();
 else if(part=="bezel") bezel();
 else if(part=="shell") shell();
 else if(part=="rail_cover") rail_cover();
