@@ -227,6 +227,10 @@ module coupon_slider(c=rail_slop,label=""){difference(){union(){cube([28,17,3]);
  if(label!="") translate([20,8.5,-0.01]) mirror([1,0,0]) linear_extrude(0.4) text(label,size=5,halign="center",valign="center");}}
 // Clearance series: labels are per-side clearance in hundredths of a mm (30 = 0.30). Same groove block as fit_coupon.
 module fit_coupon_series(){for(i=[0:3]) translate([0,i*20,0]) coupon_slider([0.30,0.25,0.20,0.15][i],str([30,25,20,15][i]));}
+// PETG retest: one slider at a single clearance plus the groove block (shoe/dovetail), both print-orientation.
+module fit_coupon_20(){coupon_slider(0.20,"20");
+ translate([0,24,0]) difference(){cube([28,16,7]);translate([0,8,3]) rotate([0,90,0])
+ linear_extrude(30) polygon([[0,-4.6],[-4,-3.1],[-4,3.1],[0,4.6]]);}}
 module fit_coupon(){coupon_slider();
  translate([0,24,0]) difference(){cube([28,16,7]);translate([0,8,3]) rotate([0,90,0])
  linear_extrude(30) polygon([[0,-4.6],[-4,-3.1],[-4,3.1],[0,4.6]]);}
@@ -243,6 +247,7 @@ module assembly(){
 }
 if(part=="assembly") assembly();
 else if(part=="fit_coupon_series") fit_coupon_series();
+else if(part=="fit_coupon_20") fit_coupon_20();
 else if(part=="bezel") bezel();
 else if(part=="shell") shell();
 else if(part=="rail_cover") rail_cover();
