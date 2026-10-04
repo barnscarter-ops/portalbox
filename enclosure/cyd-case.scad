@@ -22,7 +22,7 @@ buttons=[[O+3.26,O+41.47],[O+3.26,O+14.03]];
 fan=[O+29,O+44]; fan_spacing=20; // Sunon has THREE mounting holes; fourth position unused
 fan_holes=[[-10,-10],[-10,10],[10,10]];
 rail_x=15; rail_y=18; rail_len=W-rail_x; rail_base=2; rail_h=4;
-rail_slop=0.35; // profile allowance; mating gap varies with seating height
+rail_slop=0.20; // per-side dovetail clearance; PETG fit-tested 2026-10-03 (P1S, 0.20 fit like a glove)
 stylus_len=87.31; stylus_bore=8.8; tube_len=98;
 tube_y=-5; tube_z=depth-3; tube_x=7;
 pod_x=44; pod_y=5; pod_z=depth+rail_slop;

@@ -3,12 +3,12 @@
 Revision 0.3 (2026-09-30): keyed axial pogo dock carries battery BAT+/GND
 through the recessed rail. Exterior battery socket, pod grommet and jumper removed.
 PowerBoost remains inside the main shell; the battery-only pod body remains 14 mm.
-Complete printed assembly with pod: approximately 110 × 72.7 × 47.75 mm.
-In inches: 4.33 × 2.86 × 1.88. Depth accounting: 31 mm main body + 0.35 mm
-pod gap + 14 mm pod body + 2.4 mm lid = 47.75 mm. Pod-only bounding depth is
-18.15 mm because the local contact guard projects inward 4.15 mm; 3.80 mm of that
-projection overlaps the case. The dovetail shoe itself is 3.65 mm deep, with
-3.30 mm inside the case. The pod-only depth is not additive. Full width 75.5 mm
+Complete printed assembly with pod: approximately 110 × 72.7 × 47.60 mm.
+In inches: 4.33 × 2.86 × 1.87. Depth accounting: 31 mm main body + 0.20 mm
+pod gap + 14 mm pod body + 2.4 mm lid = 47.60 mm. Pod-only bounding depth is
+18.00 mm because the local contact guard projects inward 4.00 mm; 3.80 mm of that
+projection overlaps the case. The dovetail shoe itself is 3.80 mm deep, with
+3.60 mm inside the case. The pod-only depth is not additive. Full width 75.5 mm
 includes its 9.5 mm guarded docking/lock tab; its storage body is 66 mm wide.
 Without a battery pod, the full assembled envelope is 108 × 72.7 × 37 mm
 (4.25 × 2.86 × 1.46 in), including stylus holder and cap tether lug.
@@ -140,8 +140,9 @@ Physically tested facts only; update when the material changes.
 | Date | Part | Printer / filament | Result |
 | --- | --- | --- | --- |
 | 2026-10-03 | `fit_coupon_series` (0.30 / 0.25 / 0.20 / 0.15 mm per side) | Bambu P1S, PLA | 0.15 mm fit perfectly against the old shoe |
+| 2026-10-03 | `fit_coupon_20` (0.20 mm per side) | Bambu P1S, PETG, inner-wall speed raised | Fits like a glove; slight snag at the end from a small burr on the corner face, not a clearance problem |
 
-Open: the case will be printed in PETG, which can fit differently from PLA. `rail_slop` stays 0.35 until the series is reprinted in PETG; then set it to the PETG winner.
+`rail_slop` is 0.20 mm per side (PETG winner). It also sets `pod_z` and the rail cover seat height, so the pod sits 0.15 mm lower than at 0.35 mm. `export.py` now pins the CGAL backend because the default Manifold backend produced non-manifold `shell`/`pod` meshes.
 
 ## Review and verification gates
 

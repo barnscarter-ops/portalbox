@@ -5,7 +5,7 @@
       "part": "bezel",
       "watertight": true,
       "bodies": 1,
-      "volume_mm3": 7829.93,
+      "volume_mm3": 7829.92,
       "bounds_mm": [
         [
           0.0,
@@ -18,15 +18,13 @@
           7.4
         ]
       ],
-      "triangles": 2736,
-      "self_intersecting_faces": 0,
-      "winding_consistent": true
+      "triangles": 2736
     },
     {
       "part": "shell",
       "watertight": true,
       "bodies": 1,
-      "volume_mm3": 43780.8,
+      "volume_mm3": 43780.82,
       "bounds_mm": [
         [
           0.0,
@@ -39,15 +37,13 @@
           34.4
         ]
       ],
-      "triangles": 6998,
-      "self_intersecting_faces": 0,
-      "winding_consistent": true
+      "triangles": 6992
     },
     {
       "part": "rail_cover",
       "watertight": true,
       "bodies": 1,
-      "volume_mm3": 2585.39,
+      "volume_mm3": 2748.68,
       "bounds_mm": [
         [
           0.0,
@@ -57,12 +53,10 @@
         [
           90.3,
           6.3,
-          3.65
+          3.8
         ]
       ],
-      "triangles": 428,
-      "self_intersecting_faces": 0,
-      "winding_consistent": true
+      "triangles": 424
     },
     {
       "part": "stylus_cap",
@@ -81,20 +75,18 @@
           7.0
         ]
       ],
-      "triangles": 628,
-      "self_intersecting_faces": 0,
-      "winding_consistent": true
+      "triangles": 628
     },
     {
       "part": "pod",
       "watertight": true,
       "bodies": 1,
-      "volume_mm3": 17425.35,
+      "volume_mm3": 17556.55,
       "bounds_mm": [
         [
           -9.5,
           0.0,
-          -4.15
+          -4.0
         ],
         [
           66.0,
@@ -102,9 +94,7 @@
           14.0
         ]
       ],
-      "triangles": 3704,
-      "self_intersecting_faces": 0,
-      "winding_consistent": true
+      "triangles": 3688
     },
     {
       "part": "pod_lid",
@@ -123,15 +113,13 @@
           2.4
         ]
       ],
-      "triangles": 988,
-      "self_intersecting_faces": 0,
-      "winding_consistent": true
+      "triangles": 988
     },
     {
       "part": "divider",
       "watertight": true,
       "bodies": 1,
-      "volume_mm3": 4810.18,
+      "volume_mm3": 4810.17,
       "bounds_mm": [
         [
           0.0,
@@ -144,9 +132,7 @@
           1.6
         ]
       ],
-      "triangles": 416,
-      "self_intersecting_faces": 0,
-      "winding_consistent": true
+      "triangles": 416
     },
     {
       "part": "button",
@@ -165,15 +151,13 @@
           18.5
         ]
       ],
-      "triangles": 380,
-      "self_intersecting_faces": 0,
-      "winding_consistent": true
+      "triangles": 380
     },
     {
       "part": "fit_coupon",
       "watertight": true,
       "bodies": 3,
-      "volume_mm3": 6237.26,
+      "volume_mm3": 6272.18,
       "bounds_mm": [
         [
           0.0,
@@ -186,16 +170,7 @@
           15.0
         ]
       ],
-      "triangles": 460,
-      "self_intersecting_faces": 0,
-      "winding_consistent": true
+      "triangles": 460
     }
-  ],
-  "source_sha256": "84422404451ff287a1d7e06298ed561893e8d6ca87695329fa02635667e4d8ad",
-  "hash_basis": "UTF-8 source with LF newlines",
-  "self_intersection_check": {
-    "method": "PyMeshLab 2025.7.post1 compute_selection_by_self_intersections_per_face",
-    "date": "2026-10-02",
-    "result": "All nine exported STL meshes have zero self-intersecting faces."
-  }
+  ]
 }

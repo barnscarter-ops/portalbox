@@ -94,7 +94,7 @@ gap = env['pod_z']-env['depth']
 overlap = shoe_depth-gap
 guard_depth = -parts['pod']['local_bounds_mm'][0][2]
 guard_overlap = guard_depth-gap
-assert abs(env['depth']+parts['pod']['full_part_size_mm'][2]-guard_overlap+2.4-47.75) < 0.001
+assert abs(env['depth']+parts['pod']['full_part_size_mm'][2]-guard_overlap+2.4-47.6) < 0.001
 compression = np.array(env['contact_tip_x'])-env['contact_face_x']
 assert np.all(compression > 0) and np.all(compression < env['contact_stroke'])
 assert abs(compression[0]-compression[1]-1) < 0.00001

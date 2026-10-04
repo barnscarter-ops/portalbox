@@ -24,7 +24,7 @@ def main():
 
     def build(part):
         path = ROOT / 'draft-stl' / f'{part}.stl'
-        cmd = [args.openscad, '-o', str(path), '-D', f'part="{part}"',
+        cmd = [args.openscad, '--backend', 'CGAL', '-o', str(path), '-D', f'part="{part}"',
                str(ROOT / 'cyd-case.scad')]
         run = subprocess.run(cmd, capture_output=True, text=True)
         if run.returncode or not path.exists() or 'ERROR:' in run.stderr:
