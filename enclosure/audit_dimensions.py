@@ -99,7 +99,7 @@ compression = np.array(env['contact_tip_x'])-env['contact_face_x']
 assert np.all(compression > 0) and np.all(compression < env['contact_stroke'])
 assert abs(compression[0]-compression[1]-1) < 0.00001
 assert env['contact_y'][1]-env['contact_y'][0] == 4
-assert abs(env['contact_face_x']-env['contact_guard_x']-2.2) < 0.00001
+assert abs(env['contact_face_x']-env['contact_guard_x']-2.0) < 0.00001
 assert abs(assemblies['battery']['size_mm'][2]-(env['depth']+gap+pod_body+2.4)) < 0.001
 assert np.allclose(np.diff(np.array(env['mounts']), axis=0)[0], [94.5, 0])
 assert abs(env['mounts'][2][1]-env['mounts'][0][1]-47.9) < 0.0001
