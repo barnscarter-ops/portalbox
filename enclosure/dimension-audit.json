@@ -66,13 +66,13 @@
         ],
         [
           90.3,
-          6.3,
+          6.29999,
           3.8
         ]
       ],
       "full_part_size_mm": [
         90.3,
-        12.6,
+        12.59999,
         3.8
       ],
       "embedded_max_rounding_error_mm": 0.005
@@ -95,7 +95,7 @@
         12.8,
         7.0
       ],
-      "embedded_max_rounding_error_mm": 0.004923
+      "embedded_max_rounding_error_mm": 0.00492
     },
     "pod": {
       "local_bounds_mm": [
@@ -155,7 +155,7 @@
         50.6,
         1.6
       ],
-      "embedded_max_rounding_error_mm": 0.004075
+      "embedded_max_rounding_error_mm": 0.0041
     },
     "button": {
       "local_bounds_mm": [
@@ -167,15 +167,15 @@
         [
           3.5,
           3.5,
-          18.5
+          20.0
         ]
       ],
       "full_part_size_mm": [
         7.0,
         7.0,
-        18.5
+        20.0
       ],
-      "embedded_max_rounding_error_mm": 0.004923
+      "embedded_max_rounding_error_mm": 0.00492
     }
   },
   "assemblies": {
@@ -347,21 +347,21 @@
         8
       ],
       [
-        64.1,
+        64.125,
         12
       ],
       [
-        84.1,
+        84.125,
         12
       ]
     ],
     "lower_edge_ports_center_x_width_mm": [
       [
-        40.02,
-        13
+        40.025,
+        12
       ],
       [
-        57.89,
+        58.2,
         16
       ]
     ],

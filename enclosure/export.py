@@ -22,9 +22,14 @@ def main():
     (ROOT / 'draft-stl').mkdir(exist_ok=True)
     (ROOT / 'renders').mkdir(exist_ok=True)
 
+    # Newer OpenSCAD defaults to Manifold (non-manifold shell/pod); pin CGAL when the
+    # build has the flag. Older builds (e.g. 2021.01) are CGAL-only and reject it.
+    help_text = subprocess.run([args.openscad, '--help'], capture_output=True, text=True)
+    backend = ['--backend', 'CGAL'] if '--backend' in help_text.stdout + help_text.stderr else []
+
     def build(part):
         path = ROOT / 'draft-stl' / f'{part}.stl'
-        cmd = [args.openscad, '--backend', 'CGAL', '-o', str(path), '-D', f'part="{part}"',
+        cmd = [args.openscad, *backend, '-o', str(path), '-D', f'part="{part}"',
                str(ROOT / 'cyd-case.scad')]
         run = subprocess.run(cmd, capture_output=True, text=True)
         if run.returncode or not path.exists() or 'ERROR:' in run.stderr:

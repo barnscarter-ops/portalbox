@@ -5,7 +5,7 @@
       "part": "bezel",
       "watertight": true,
       "bodies": 1,
-      "volume_mm3": 7829.92,
+      "volume_mm3": 7829.93,
       "bounds_mm": [
         [
           0.0,
@@ -24,7 +24,7 @@
       "part": "shell",
       "watertight": true,
       "bodies": 1,
-      "volume_mm3": 43780.82,
+      "volume_mm3": 43521.82,
       "bounds_mm": [
         [
           0.0,
@@ -37,7 +37,7 @@
           34.4
         ]
       ],
-      "triangles": 6992
+      "triangles": 6886
     },
     {
       "part": "rail_cover",
@@ -56,7 +56,7 @@
           3.8
         ]
       ],
-      "triangles": 424
+      "triangles": 428
     },
     {
       "part": "stylus_cap",
@@ -94,7 +94,7 @@
           14.0
         ]
       ],
-      "triangles": 3688
+      "triangles": 3704
     },
     {
       "part": "pod_lid",
@@ -119,7 +119,7 @@
       "part": "divider",
       "watertight": true,
       "bodies": 1,
-      "volume_mm3": 4810.17,
+      "volume_mm3": 4810.18,
       "bounds_mm": [
         [
           0.0,
@@ -138,7 +138,7 @@
       "part": "button",
       "watertight": true,
       "bodies": 1,
-      "volume_mm3": 304.69,
+      "volume_mm3": 325.42,
       "bounds_mm": [
         [
           -3.5,
@@ -148,7 +148,7 @@
         [
           3.5,
           3.5,
-          18.5
+          20.0
         ]
       ],
       "triangles": 380
@@ -157,7 +157,7 @@
       "part": "fit_coupon",
       "watertight": true,
       "bodies": 3,
-      "volume_mm3": 6272.18,
+      "volume_mm3": 6272.17,
       "bounds_mm": [
         [
           0.0,
