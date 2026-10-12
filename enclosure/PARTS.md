@@ -1,7 +1,38 @@
 # CYD enclosure — parts & procurement list
 
 Buy list for the 3D-printed CYD enclosure + its battery power system.
-Updated 2026-10-02 (sub-items resolved, pricing/links added, Mill-Max rating corrected).
+Updated 2026-10-04 (Amazon orders reconciled, wire/heat-shrink owned, Amazon power parts chosen, Digi-Key cart staged).
+
+## Order status (2026-10-04)
+
+| Item | Status | Where |
+|---|---|---|
+| M3 heat-set inserts (5) | **Ordered** — INCLY 720 pc kit, delivered 10-03. Confirm the M3 size is 4.6 mm OD (not slim) when opened | Amazon 114-8967031-6625069 |
+| M3×12 screws (5) | **Ordered** — 2280 pc M2–M5 button-head hex kit; Carter confirmed 12 mm length present. Button head is shallower than the ISO 4762 counterbore (Ø5.8 × 3.2), so it sits fine | Amazon 114-8967031-6625069 |
+| SPDT slide switch | **Ordered** — Tnuocke 120 pc kit | Amazon 114-8967031-6625069 |
+| PETG filament | **Ordered** — ELEGOO PETG 4 kg + 1 kg black PETG (substitute for Bambu PETG-HF) | Amazon 114-8967031-6625069 |
+| Printer, caliper, deburring tool | **Ordered / delivered** — P1S + AMS, digital caliper, deburring set | Amazon |
+| 24 AWG stranded wire + heat-shrink | **Complete** — owned (Grizzly stock) | — |
+| LiPo battery 3.7 V ~2500 mAh | **To buy** — Amazon B0C2KP2PP6, 605060, 6 × 50 × 61 mm (fits 60 × 50 × 7.3 pocket), $9.99. Listing does not state a protection circuit — check for a PCM board at the leads before use; cut JST, leads go to pad carriers | Amazon cart link |
+| Charger/booster (replaces PowerBoost 1000C) | **To buy** — Amazon B0GRV7F1LJ, 5 pc Type-C 5V 2A lithium charge + boost module, $7.59, arrives 2026-10-05. The PowerBoost listing (B01BMRBTH2) ships in ~2 weeks, so it was dropped. Alt: B0BYMC7XBZ, 4 pc IP5310 3.1A with key switch, $11.89, arrives 10-08. **Not a drop-in:** onboard USB-C replaces the separate USB-C breakout (no 5.1 kΩ breakout needed) and there is no EN pin, so the slide switch and WIRING.md EN/BAT/USB pad plan must be re-checked against the board's actual pads and the SCAD pocket (was 45 × 23 × 10). Verify pin labels, charge-while-running and LiPo-absent behaviour on the bench | Amazon cart link |
+| USB-C sink breakout (5.1 kΩ CC) | **Dropped** — module has its own USB-C port. Fallback if its pads are unusable: Amazon B0GR8SNSCQ, $8.45 | — |
+| Sunon MF25100V2-1000U-A99 fan ×1 | **In Digi-Key cart** — 259-1831-ND, $10.69, 2,051 in stock (the 26-wk lead is factory only) | Digi-Key |
+| Mill-Max 0947 pogo pin ×4 | **In Digi-Key cart** — ED11275-ND, $1.78 ea, 20k in stock | Digi-Key |
+| Harwin S70-125161545R pad ×4 | **In Digi-Key cart** — 952-3138-1-ND (cut tape), $0.52 ea, 70k in stock | Digi-Key |
+| Pad carriers | **Build step** — see "Pad carriers" below. Not purchased | — |
+
+Digi-Key cart total: $19.89 parts + ~$8.49 FedEx Ground + ~$2.01 tariff ≈ $30.39.
+Generic Amazon pogo pins and fans were not substituted: no 5.2 A rating, and the SCAD needs
+the Sunon Ø2.8 mm 3-hole pattern.
+
+## Pad carriers
+
+The Harwin S70 is a bare SMT gold pad (2.5 × 1.6 × 0.15 mm) with no leads, so nothing can
+be soldered to it directly except on a flat surface. A "carrier" is a tiny piece of
+copper-clad FR4 or perfboard (about 1.2 mm × 2.7 mm envelope in the printed pad well) with
+two copper lands: one the pad is soldered flat onto, and one where the 24 AWG lead is soldered.
+The carrier sits in the recessed shoe on the battery pod; the shell pogo pin presses on the
+pad. Cut four from scrap copper-clad or perfboard after the pads arrive.
 
 ## Resolved sub-items (were "open" as of 2026-10-01)
 
@@ -94,5 +125,6 @@ the 5.6 A derated discrete rating with margin. Still bench-validate at 3 A
 
 ## Already owned (don't buy)
 
-22 AWG solid wire · solder · iron · multimeter · DHT11 (Keyestudio kit) ·
-ESP32-S3 Super Mini ×5 · Bambu P1S + AMS + 3× PLA (orange, green, white separator).
+22 AWG solid wire · 24 AWG stranded wire + heat-shrink (Grizzly stock) · solder · iron ·
+multimeter · DHT11 (Keyestudio kit) · ESP32-S3 Super Mini ×5 · Bambu P1S + AMS + 3× PLA
+(orange, green, white separator) · digital caliper · deburring tool · PETG 5 kg total.
