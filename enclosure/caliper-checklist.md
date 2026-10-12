@@ -72,3 +72,27 @@ that reconciliation and tell you exactly which lines change).
 | 8 | | |
 | 9 | | |
 | 10 | | |
+
+## Measured 2026-10-12 (owner calipers, CYD in hand)
+
+"PCB back" = the connector/ESP32 face, opposite the LCD. Positions are from the
+board corner, rear view, USB on the left.
+
+| Item | Measured (mm) | SCAD |
+|---|---|---|
+| PCB outline | 101.5 × 55.4 | `pcb=[101.5,55.5]` (0.1 mm difference, absorbed by `gap`) |
+| PCB thickness | 1.57 | seat gap 1.7 (bezel spacer top z=7.4 to column end z=9.1) |
+| Glass front to PCB back | 5.65 (touch panel permanently fitted) | glass front lands at z=3.45, 0.45 behind the bezel face |
+| RESET | 2 from USB end, 9.15 from SPI/I2C edge | `buttons` |
+| BOOT | 2 from USB end, 9.15 from UART/SD edge | `buttons` |
+| Button height above PCB back | 4.15 | plunger `button()` lengthened 18.5 → 20 (print-tested) |
+| SPI housing | 59 – 69.25 (centre 64.125, 10.25 wide) | `upper_ports` |
+| I2C housing | 79 – 89.25 (centre 84.125, 10.25 wide) | `upper_ports` |
+| UART housing | 34.9 – 45.15 (centre 40.025, 10.25 wide) | `lower_ports` |
+| microSD slot | 50.75 – 65.65 (centre 58.2, 14.9 wide), 2.5 in from edge | `lower_ports` |
+| JST housing height | 3.75 above PCB back | opening z 7.75–14.25 covers PCB back (z=9.1) to housing top (12.85) |
+| microSD card installed | flush with the slot, 2 above PCB back | within the opening |
+| USB-C | top 3.06, bottom flush with PCB back | cutout z 7.5–14.5 |
+| Tallest back component | 6.5 above PCB back (z=15.6) | 3 mm under the fan frame, 1 mm under the booster pocket |
+
+Still unmeasured: GPIO39/35 connector (still datasheet position 29.44).

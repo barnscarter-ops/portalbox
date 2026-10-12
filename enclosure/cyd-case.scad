@@ -12,11 +12,11 @@ insert_od=4.6; insert_seat_d=4.1; insert_seat_depth=4.2;
 // Centers from the dimensioned rear drawing after rotating into landscape.
 // Owner board checked 2026-09-30: speaker faces rear; BAT faces inward.
 // Both stay enclosed. These lists include only outward-facing edge connectors.
-upper_ports=[[29.44,8],[64.1,12],[84.1,12]]; // GPIO39/35, SPI, I2C
-lower_ports=[[40.02,13],[57.89,16]]; // UART, microSD
+upper_ports=[[29.44,8],[64.125,12],[84.125,12]]; // GPIO39/35, SPI, I2C (caliper 2026-10-12: housings 10.25 wide + 1.75 clearance)
+lower_ports=[[40.025,12],[58.2,16]]; // UART, microSD (caliper 2026-10-12: UART 10.25 wide, SD 14.9 wide)
 port_z=11; port_h=6.5; // provisional vertical offsets / clearances
 mounts=[[O+3.5,O+3.8],[O+98,O+3.8],[O+3.5,O+51.7],[O+98,O+51.7]];
-buttons=[[O+3.26,O+41.47],[O+3.26,O+14.03]];
+buttons=[[O+2,O+46.25],[O+2,O+9.15]]; // RESET (upper edge) / BOOT (UART-SD edge): 2 from USB end, 9.15 from long edge (caliper 2026-10-12)
 // Fan x/y start PCB-relative; add O for case coordinates. ESP32 module position
 // is unmeasured: confirm final fan center over the module with calipers.
 fan=[O+29,O+44]; fan_spacing=20; // Sunon has THREE mounting holes; fourth position unused
@@ -165,7 +165,7 @@ module stylus_cap(){difference(){union(){
  bore(7,0,-1,2,5);
 } // bayonet cap; test actual fit before fitting stylus
 }
-module button(){union(){cylinder(d=4.2,h=18.5); cylinder(d=7,h=2);}}
+module button(){union(){cylinder(d=4.2,h=20); cylinder(d=7,h=2);}} // 18.5 + 1.5 mm: print-tested push length 2026-10-12
 // Battery-only pod; charger stays in main case when pod is detached.
 module pod(){difference(){union(){
  difference(){rounded(pod_size[0],pod_size[1],pod_size[2]);
